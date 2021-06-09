@@ -1,2 +1,4 @@
+include(
+    ":app"
+)
 rootProject.name = "DVT Weather App"
-include ':app'
