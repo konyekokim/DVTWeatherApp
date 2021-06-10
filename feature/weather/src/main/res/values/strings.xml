@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="min">min</string>
+    <string name="search_city">Enter name of City</string>
+    <string name="current">Current</string>
+    <string name="max">max</string>
+</resources>

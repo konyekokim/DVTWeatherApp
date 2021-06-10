@@ -1,9 +1,208 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/searchView"
+        android:layout_width="0dip"
+        android:layout_height="48dip"
+        android:layout_marginTop="16dip"
+        android:layout_marginHorizontal="16dp"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardCornerRadius="8dip"
+        app:cardElevation="2dip"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
+        <EditText
+            android:id="@+id/searchEntry"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:drawableStart="@drawable/ic_search"
+            android:drawablePadding="8dip"
+            android:fontFamily="@font/gilroy_regular"
+            android:hint="@string/search_city"
+            android:inputType="textCapWords"
+            android:imeOptions="actionSearch"
+            android:singleLine="true"
+            android:maxLines="1"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="8dip"
+            android:textColor="@color/color_on_background"
+            android:textColorHint="@color/color_grey"
+            tools:ignore="AutoFill" />
+    </androidx.cardview.widget.CardView>
+
+    <ScrollView
+        android:layout_width="0dip"
+        android:layout_height="0dip"
+        android:scrollbars="none"
+        android:id="@+id/weather_scroll_view"
+        tools:background="@color/color_sunny"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                tools:src="@drawable/forest_sunny"
+                app:layout_constraintTop_toTopOf="parent"
+                android:id="@+id/weather_theme_img"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/todays_date"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="June 10, 2021"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textColor="@color/color_text"
+                android:fontFamily="@font/gilroy_medium"
+                android:layout_marginTop="85dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/location"
+                android:textSize="22sp"
+                tools:text="Mountain View"
+                app:layout_constraintTop_toBottomOf="@id/todays_date"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textColor="@color/color_text"
+                android:fontFamily="@font/gilroy_medium"
+                android:layout_marginTop="6dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/temperature"
+                tools:text="29°"
+                app:layout_constraintTop_toBottomOf="@id/location"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/color_text"
+                android:fontFamily="@font/gilroy_bold"
+                android:textSize="71sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/temperature"
+                android:id="@+id/weather_type"
+                tools:text="Sunny"
+                android:textAllCaps="true"
+                android:textSize="24sp"
+                android:textColor="@color/color_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:letterSpacing="0.5"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/min_temp"
+                tools:text="19°"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/weather_theme_img"
+                android:textColor="@color/color_text"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/min_temp_text"
+                android:text="@string/min"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@id/min_temp"
+                app:layout_constraintEnd_toEndOf="@id/min_temp"
+                app:layout_constraintTop_toBottomOf="@id/min_temp"
+                android:textColor="@color/color_text"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/current_temp"
+                tools:text="21°"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/weather_theme_img"
+                android:textColor="@color/color_text"
+                android:layout_marginTop="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/current_temp_text"
+                android:text="@string/current"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@id/current_temp"
+                app:layout_constraintEnd_toEndOf="@id/current_temp"
+                app:layout_constraintTop_toBottomOf="@id/current_temp"
+                android:textColor="@color/color_text"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/max_temp"
+                tools:text="25°"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/weather_theme_img"
+                android:textColor="@color/color_text"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/max_temp_text"
+                android:text="@string/max"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@id/max_temp"
+                app:layout_constraintEnd_toEndOf="@id/max_temp"
+                app:layout_constraintTop_toBottomOf="@id/max_temp"
+                android:textColor="@color/color_text"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:id="@+id/temp_bottom_view"
+                app:layout_constraintTop_toBottomOf="@id/current_temp_text"
+                android:layout_marginTop="8dp"
+                android:background="@color/color_text"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/forecastList"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/temp_bottom_view"
+                tools:itemCount="10"
+                tools:listitem="@layout/item_forecast"
+                android:paddingBottom="30dp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

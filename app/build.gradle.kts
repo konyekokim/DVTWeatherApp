@@ -41,12 +41,11 @@ android {
 
 dependencies {
 
-    /*implementation(project(":core"))
+    implementation(project(":core"))
     implementation(project(":lib:commons"))
     implementation(project(":lib:navigation"))
     implementation(project(":lib:resources"))
-    implementation(project(":feature:cars"))
-    implementation(project(":feature:cardetail"))*/
+    implementation(project(":feature:weather"))
 
     implementation(Dependencies.Kotlin.stdlib)
 
@@ -62,5 +61,5 @@ dependencies {
 
     implementation(Dependencies.Google.material)
 
-    //testImplementation(project(":lib:testcommons"))
+    testImplementation(project(":lib:testcommons"))
 }
