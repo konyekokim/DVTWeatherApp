@@ -1,6 +1,7 @@
 package com.konyekokim.core.database
 
 import androidx.room.Database
+import androidx.room.TypeConverters
 import com.konyekokim.core.BuildConfig
 import com.konyekokim.core.data.entities.CurrentWeather
 import com.konyekokim.core.data.entities.ForecastWeather
@@ -10,7 +11,7 @@ import com.konyekokim.core.data.entities.ForecastWeather
     exportSchema = false,
     version = BuildConfig.WEATHER_DATABASE_VERSION
 )
-
+@TypeConverters(Converter::class)
 abstract class WeatherDatabase {
     abstract fun currentWeatherDao(): CurrentWeatherDao
     abstract fun forecastWeatherDao(): ForecastWeatherDao
