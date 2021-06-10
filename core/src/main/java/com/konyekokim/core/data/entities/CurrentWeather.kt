@@ -17,5 +17,6 @@ data class CurrentWeather(
     val dt: Int,
     val name: String,
     val cod: Int,
-    val sys: Sys
+    val sys: Sys,
+    val coord: Coordinates
 )

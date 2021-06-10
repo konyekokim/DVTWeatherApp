@@ -68,6 +68,18 @@ class Converter {
 
         @TypeConverter
         @JvmStatic
+        fun fromCoordinatesData(value: Coordinates):String{
+            return gson.toJson(value)
+        }
+
+        @TypeConverter
+        @JvmStatic
+        fun toCoordinatesData(value: String): Coordinates{
+            return gson.fromJson(value, Coordinates::class.java)
+        }
+
+        @TypeConverter
+        @JvmStatic
         fun fromWeather(value: Weather): String{
             return gson.toJson(value)
         }

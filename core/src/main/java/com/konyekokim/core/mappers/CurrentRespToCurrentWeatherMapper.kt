@@ -17,7 +17,8 @@ class CurrentRespToCurrentWeatherMapper @Inject constructor():
             dt = from.dt,
             name = from.name,
             cod = from.cod,
-            sys = from.sys
+            sys = from.sys,
+            coord = from.coord
         )
     }
 }

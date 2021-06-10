@@ -10,5 +10,6 @@ data class CurrentResp(
     val id: Int,
     val name: String,
     val cod: Int,
-    val sys: Sys
+    val sys: Sys,
+    val coord: Coordinates
 )
