@@ -41,7 +41,7 @@ dependencies {
 
     //Retrofit-OkHttp
     implementation(Dependencies.Retrofit.retrofit)
-    implementation(Dependencies.Retrofit.moshi)
+    implementation(Dependencies.Retrofit.gson)
     implementation(Dependencies.OkHttp.okhttp)
     implementation(Dependencies.OkHttp.loggingInterceptor)
 

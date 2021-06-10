@@ -60,7 +60,7 @@ object Dependencies {
 
     object Retrofit {
         const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
-        const val moshi = "com.squareup.retrofit2:converter-moshi:${Versions.retrofit}"
+        const val gson = "com.squareup.retrofit2:converter-gson:${Versions.retrofit}"
     }
 
     object OkHttp {

@@ -1,6 +1,6 @@
 package com.konyekokim.core.network.responses
 
-import com.squareup.moshi.Json
+import com.google.gson.annotations.SerializedName
 
 data class WeatherData(
     val id: Int,
@@ -10,5 +10,5 @@ data class WeatherData(
     val clouds: Clouds,
     val wind: Wind,
     val rain: Rain,
-    @field:Json(name = "dt_txt") val dtTxt: String?
+    @SerializedName("dt_txt") val dtTxt: String?
 )

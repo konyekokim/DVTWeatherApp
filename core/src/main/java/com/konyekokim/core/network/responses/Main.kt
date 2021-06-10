@@ -1,11 +1,12 @@
 package com.konyekokim.core.network.responses
 
-import com.squareup.moshi.Json
+import com.google.gson.annotations.SerializedName
+
 
 data class Main(
     val temp: Double,
     val pressure: Double,
     val humidity: Double,
-    @field:Json(name = "temp_min") val tempMin: String,
-    @field:Json(name = "temp_max") val tempMax: String
+    @SerializedName("temp_min") val tempMin: String,
+    @SerializedName("temp_max") val tempMax: String
 )
