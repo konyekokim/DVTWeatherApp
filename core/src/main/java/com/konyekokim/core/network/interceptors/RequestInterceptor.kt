@@ -12,6 +12,7 @@ class RequestInterceptor @Inject constructor(): Interceptor {
 
         val httpUrl = request.url.newBuilder()
             .addQueryParameter(QUERY_NAME_API_KEY, BuildConfig.API_KEY)
+            .addQueryParameter(QUERY_NAME_API_UNITS, BuildConfig.API_UNITS)
             .build()
 
         request = request.newBuilder().url(httpUrl).build()
@@ -21,6 +22,7 @@ class RequestInterceptor @Inject constructor(): Interceptor {
 
     companion object {
         const val QUERY_NAME_API_KEY = "appid"
+        const val QUERY_NAME_API_UNITS = "units"
     }
 
 }

@@ -11,10 +11,13 @@ android {
             type = "String",
             name = "API_BASE_URL", value = "\"https://openweathermap.org/\""
         )
-
         it.buildConfigField(
             type = "String",
             name = "API_KEY", value = "\"1a91f1370f47f536beb6b3ccc4b110c4\""
+        )
+        it.buildConfigField(
+            type = "String",
+            name = "API_UNITS", value = "\"metric\""
         )
         it.buildConfigField(type = "String", name = "WEATHER_DATABASE_NAME", value = "\"weather-db\"")
         it.buildConfigField(type = "int", name = "WEATHER_DATABASE_VERSION", value = "1")
