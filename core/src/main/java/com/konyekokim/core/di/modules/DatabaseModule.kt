@@ -30,4 +30,9 @@ class DatabaseModule {
     fun provideForecastWeatherDao(weatherDatabase: WeatherDatabase) =
         weatherDatabase.forecastWeatherDao()
 
+    @Provides
+    @Singleton
+    fun provideFavoriteLocationDao(weatherDatabase: WeatherDatabase) =
+        weatherDatabase.favoriteLocationDao()
+
 }

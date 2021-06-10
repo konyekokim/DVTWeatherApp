@@ -16,4 +16,5 @@ import com.konyekokim.core.data.entities.ForecastWeather
 abstract class WeatherDatabase: RoomDatabase() {
     abstract fun currentWeatherDao(): CurrentWeatherDao
     abstract fun forecastWeatherDao(): ForecastWeatherDao
+    abstract fun favoriteLocationDao(): FavoriteLocationDao
 }

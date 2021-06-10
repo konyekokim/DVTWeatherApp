@@ -2,6 +2,7 @@ package com.konyekokim.core.repository
 
 import com.konyekokim.core.data.Result
 import com.konyekokim.core.data.entities.CurrentWeather
+import com.konyekokim.core.data.entities.FavoriteLocation
 import com.konyekokim.core.data.entities.ForecastWeather
 import com.konyekokim.core.datasource.local.WeatherLocalDataSource
 import com.konyekokim.core.datasource.remote.WeatherRemoteDataSource
@@ -65,4 +66,10 @@ class WeatherRepository @Inject constructor(
     }
 
     suspend fun getLastSavedForecastWeather() = localDataSource.getLastSavedForecastWeather()
+
+    suspend fun saveFavoriteLocation(favoriteLocation: FavoriteLocation){
+        localDataSource.saveFavoriteLocation(favoriteLocation)
+    }
+
+    suspend fun getFavoriteLocations() = localDataSource.getFavoriteLocations()
 }

@@ -1,15 +1,18 @@
 package com.konyekokim.core.datasource.local
 
 import com.konyekokim.core.data.entities.CurrentWeather
+import com.konyekokim.core.data.entities.FavoriteLocation
 import com.konyekokim.core.data.entities.ForecastWeather
 import com.konyekokim.core.database.CurrentWeatherDao
+import com.konyekokim.core.database.FavoriteLocationDao
 import com.konyekokim.core.database.ForecastWeatherDao
 import javax.inject.Inject
 
 
 class WeatherLocalDataSource @Inject constructor(
     private val currentWeatherDao: CurrentWeatherDao,
-    private val forecastWeatherDao: ForecastWeatherDao
+    private val forecastWeatherDao: ForecastWeatherDao,
+    private val favoriteLocationDao: FavoriteLocationDao
 ) {
 
     suspend fun saveCurrentWeather(currentWeather: CurrentWeather) {
@@ -22,5 +25,11 @@ class WeatherLocalDataSource @Inject constructor(
 
     suspend fun getLastSavedCurrentWeather() = currentWeatherDao.getLastSavedCurrentWeather()
     suspend fun getLastSavedForecastWeather() = forecastWeatherDao.getLastSavedForecastWeather()
+
+    suspend fun saveFavoriteLocation(favoriteLocation: FavoriteLocation) {
+        favoriteLocationDao.saveLocation(favoriteLocationDao)
+    }
+
+    suspend fun getFavoriteLocations() = favoriteLocationDao.getFavoriteLocations()
 
 }
