@@ -4,6 +4,7 @@ include(
     "lib:commons",
     "lib:navigation",
     ":lib:resources",
-    ":lib:testcommons"
+    ":lib:testcommons",
+    ":feature:weather"
 )
 rootProject.name = "DVT Weather App"
