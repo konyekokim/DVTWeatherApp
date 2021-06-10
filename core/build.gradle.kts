@@ -9,7 +9,7 @@ android {
     buildTypes.forEach {
         it.buildConfigField(
             type = "String",
-            name = "API_BASE_URL", value = "\"https://openweathermap.org/\""
+            name = "API_BASE_URL", value = "\"https://api.openweathermap.org/data/2.5/\""
         )
         it.buildConfigField(
             type = "String",
