@@ -50,7 +50,7 @@ subprojects {
         }
 
         kotlinGradle {
-            target("**/*.build.gradle.kts.kts.kts.kts.kts.kts.kts.kts.kts.kts.kts.kts.kts.kts.kts.kts.kts.kts.kts")
+            target("**/*.build.gradle.kts.kts.kts.kts.kts.kts.kts.kts.kts.kts.kts.kts.kts.kts.kts.kts.kts.kts.kts.kts")
             ktlint("0.29.0").userData(hashMapOf("indent_size" to "4", "android" to "true", "max_line_length" to "200"))
         }
 

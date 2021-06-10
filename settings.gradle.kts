@@ -1,5 +1,6 @@
 include(
     ":app",
+    "core",
     "lib:commons",
     "lib:navigation",
     ":lib:resources",
