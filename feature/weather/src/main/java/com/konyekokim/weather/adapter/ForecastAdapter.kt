@@ -15,7 +15,7 @@ class ForecastAdapter() :
     ListAdapter<WeatherData, ForecastAdapter.WeatherDataItemViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherDataItemViewHolder {
-        val binding = ItemForecastBinding.inflate(LayoutInflater.from(parent.context))
+        val binding = ItemForecastBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return WeatherDataItemViewHolder(binding)
     }
 
