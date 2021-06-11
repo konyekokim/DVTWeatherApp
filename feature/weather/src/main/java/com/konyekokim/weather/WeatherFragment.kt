@@ -6,8 +6,10 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Looper
+import android.text.TextUtils
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -46,8 +48,6 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
 
     private lateinit var permissionHandler: RequestPermissionHandler
 
-    private var fusedLocationClient: FusedLocationProviderClient?  = null
-
     var lat = 0.00
     var lon = 0.00
 
@@ -78,9 +78,6 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
         }
     }
 
-    val locationRequest = LocationRequest().setInterval(2000).setFastestInterval(2000)
-        .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-
     var count = 0
 
     private fun setUpLocationListener() {
@@ -96,13 +93,6 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return
         }
         fusedLocationProviderClient.requestLocationUpdates(
@@ -139,14 +129,28 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
         observe(viewModel.currentByCoordinatesData, ::onCurrentWeatherViewDataChanged)
         observe(viewModel.forecastByCityData, ::onForecastViewDataChanged)
         observe(viewModel.forecastByCoordinatesData, ::onForecastViewDataChanged)
-        //test fetch
-        /*viewModel.getCurrentWeatherByCity("Lagos")
-        viewModel.getForecastByCity("Lagos")*/
+        setUpCitySearchView()
+    }
+
+    private fun setUpCitySearchView(){
+        binding.searchEntry.setOnEditorActionListener { _, _, _ ->
+            if(!TextUtils.isEmpty(binding.searchEntry.text.toString())){
+                fetchWeatherDataByCity(binding.searchEntry.text.toString())
+                hideKeyboard()
+                true
+            }
+            false
+        }
     }
 
     private fun fetchWeatherDataFromCoordinates(lat: Double, lng: Double){
         viewModel.getCurrentWeatherByCoordinates(lat, lng)
         viewModel.getForecastByCoordinates(lat, lng)
+    }
+
+    private fun fetchWeatherDataByCity(city: String){
+        viewModel.getCurrentWeatherByCity(city)
+        viewModel.getForecastByCity(city)
     }
 
     private fun initPermissions(){
@@ -346,5 +350,17 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
             .weatherModule(WeatherModule(this))
             .build()
             .inject(this)
+    }
+
+    private fun hideKeyboard() {
+        if (activity != null) {
+            val imm =
+                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            try {
+                imm.hideSoftInputFromWindow(requireView().windowToken, 0)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 }
