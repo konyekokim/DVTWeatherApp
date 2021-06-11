@@ -8,6 +8,7 @@ class CurrentRespToCurrentWeatherMapper @Inject constructor():
     Mapper<CurrentResp, CurrentWeather> {
     override suspend fun map(from: CurrentResp): CurrentWeather {
         return CurrentWeather(
+            ids = 1,
             id = from.id,
             weather = from.weather,
             main = from.main,

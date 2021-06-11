@@ -53,13 +53,27 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
     }
 
     private fun onCurrentWeatherViewDataChanged(currentWeather: CurrentWeather){
-        binding.todaysDate.text = getDateString(currentWeather.dt)
-        binding.location.text = (currentWeather.name + " , " + currentWeather.sys.country)
-        binding.temperature.text = currentWeather.main.temp.toString().appendTempSign()
-        binding.weatherType.text = currentWeather.weather[0].main
-        binding.minTemp.text = currentWeather.main.tempMin.toString().appendTempSign()
-        binding.maxTemp.text = currentWeather.main.tempMax.toString().appendTempSign()
-        binding.currentTemp.text = currentWeather.main.temp.toString().appendTempSign()
+        when{
+            currentWeather.weather!![0].main.contains("clouds", true) -> {
+                binding.weatherScrollView.setBackgroundResource(R.color.color_cloudy)
+                binding.weatherThemeImg.setImageResource(R.drawable.forest_cloudy)
+            }
+            currentWeather.weather!![0].main.contains("clear", true) -> {
+                binding.weatherScrollView.setBackgroundResource(R.color.color_sunny)
+                binding.weatherThemeImg.setImageResource(R.drawable.forest_sunny)
+            }
+            currentWeather.weather!![0].main.contains("rain", true) -> {
+                binding.weatherScrollView.setBackgroundResource(R.color.color_rainy)
+                binding.weatherThemeImg.setImageResource(R.drawable.forest_rainy)
+            }
+        }
+        binding.todaysDate.text = getDateString(currentWeather.dt ?: 1L)
+        binding.location.text = (currentWeather.name + " , " + currentWeather.sys?.country)
+        binding.temperature.text = currentWeather.main?.temp.toString().appendTempSign()
+        binding.weatherType.text = currentWeather.weather!![0].main
+        binding.minTemp.text = currentWeather.main?.tempMin.toString().appendTempSign()
+        binding.maxTemp.text = currentWeather.main?.tempMax.toString().appendTempSign()
+        binding.currentTemp.text = currentWeather.main?.temp.toString().appendTempSign()
     }
 
     private fun onCurrentWeatherViewStateChanged(currentWeatherViewState: CurrentWeatherViewState){
@@ -91,7 +105,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
     private fun setUpForecastRecyclerView(){
         forecastAdapter = ForecastAdapter()
         with(binding.forecastList){
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = forecastAdapter
         }
     }

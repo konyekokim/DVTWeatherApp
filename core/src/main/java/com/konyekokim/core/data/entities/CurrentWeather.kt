@@ -8,15 +8,15 @@ import com.konyekokim.core.network.responses.*
 data class CurrentWeather(
     @PrimaryKey
     val ids: Int = 1,
-    val id: Int,
-    val weather: List<Weather>,
-    val main: Main,
-    val visibility: Int,
-    val wind: Wind,
-    val clouds: Clouds,
-    val dt: Long,
-    val name: String,
-    val cod: Int,
-    val sys: Sys,
-    val coord: Coordinates
+    val id: Int?,
+    val weather: List<Weather>?,
+    val main: Main?,
+    val visibility: Int?,
+    val wind: Wind?,
+    val clouds: Clouds?,
+    val dt: Long?,
+    val name: String?,
+    val cod: Int?,
+    val sys: Sys?,
+    val coord: Coordinates?
 )

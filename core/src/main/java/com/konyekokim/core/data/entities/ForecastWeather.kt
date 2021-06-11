@@ -9,10 +9,10 @@ import com.konyekokim.core.network.responses.WeatherData
 data class ForecastWeather(
     @PrimaryKey
     val ids: Int = 1,
-    val name: String,
-    val cod: String,
-    val country: String,
-    val cnt: Int,
-    val list: List<WeatherData>,
-    val city: City
+    val name: String?,
+    val cod: String?,
+    val country: String?,
+    val cnt: Int?,
+    val list: List<WeatherData>?,
+    val city: City?
 )

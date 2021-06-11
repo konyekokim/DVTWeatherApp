@@ -11,6 +11,7 @@ class ForecastRespToForecastWeatherMapper @Inject constructor() :
 
     override suspend fun map(from: ForecastResp): ForecastWeather {
         return ForecastWeather(
+            ids = 1,
             name = from.name,
             cod = from.cod,
             country = from.country,
