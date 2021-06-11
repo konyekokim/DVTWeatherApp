@@ -2,19 +2,26 @@ package com.konyekokim.weather
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.konyekokim.commons.extensions.*
+import com.konyekokim.commons.extensions.appContext
+import com.konyekokim.commons.extensions.appendTempSign
+import com.konyekokim.commons.extensions.observe
+import com.konyekokim.commons.extensions.showSnackbar
 import com.konyekokim.commons.ui.getDateString
 import com.konyekokim.core.data.DataState
 import com.konyekokim.core.data.entities.CurrentWeather
 import com.konyekokim.core.data.entities.ForecastWeather
 import com.konyekokim.core.di.provider.CoreComponentProvider
+import com.konyekokim.core.network.responses.WeatherData
+import com.konyekokim.core.network.responses.WeatherDataGroup
 import com.konyekokim.weather.adapter.ForecastAdapter
 import com.konyekokim.weather.databinding.FragmentWeatherBinding
 import com.konyekokim.weather.di.DaggerWeatherComponent
 import com.konyekokim.weather.di.WeatherModule
+import java.util.*
 import javax.inject.Inject
 
 class WeatherFragment : Fragment(R.layout.fragment_weather) {
@@ -88,7 +95,63 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
     }
 
     private fun onForecastViewDataChanged(forecastWeather: ForecastWeather){
-        forecastAdapter.submitList(forecastWeather.list)
+        prepareForecastData(forecastWeather)
+        //forecastAdapter.submitList(forecastWeather.list)
+    }
+
+    private fun prepareForecastData(response: ForecastWeather){
+        if (response != null) {
+            Log.e("Forecast", response.toString())
+            val data0: MutableList<WeatherData> = ArrayList<WeatherData>()
+            val data1: MutableList<WeatherData> = ArrayList<WeatherData>()
+            val data2: MutableList<WeatherData> = ArrayList<WeatherData>()
+            val data3: MutableList<WeatherData> = ArrayList<WeatherData>()
+            val data4: MutableList<WeatherData> = ArrayList<WeatherData>()
+            val data5: MutableList<WeatherData> = ArrayList<WeatherData>()
+            val calendar0 = Calendar.getInstance()
+            calendar0[Calendar.HOUR_OF_DAY] = 0
+            calendar0[Calendar.MINUTE] = 0
+            calendar0[Calendar.SECOND] = 0
+            calendar0[Calendar.MILLISECOND] = 0
+            val calendar1 = calendar0.clone() as Calendar
+            calendar1.add(Calendar.DAY_OF_YEAR, 1)
+            val calendar2 = calendar0.clone() as Calendar
+            calendar2.add(Calendar.DAY_OF_YEAR, 2)
+            val calendar3 = calendar0.clone() as Calendar
+            calendar3.add(Calendar.DAY_OF_YEAR, 3)
+            val calendar4 = calendar0.clone() as Calendar
+            calendar4.add(Calendar.DAY_OF_YEAR, 4)
+            val calendar5 = calendar0.clone() as Calendar
+            calendar5.add(Calendar.DAY_OF_YEAR, 5)
+            for (data in response.list!!) {
+                if (getCalendarFromDate(data.dt)!!.before(calendar1)) {
+                    data0.add(data)
+                } else if (getCalendarFromDate(data.dt)!!.before(calendar2)) {
+                    data1.add(data)
+                } else if (getCalendarFromDate(data.dt)!!.before(calendar3)) {
+                    data2.add(data)
+                } else if (getCalendarFromDate(data.dt)!!.before(calendar4)) {
+                    data3.add(data)
+                } else if (getCalendarFromDate(data.dt)!!.before(calendar5)) {
+                    data4.add(data)
+                } else {
+                    data5.add(data)
+                }
+            }
+            val dataGroup = WeatherDataGroup(data0)
+            if (data1.size > 0) dataGroup.addWeatherData(data1)
+            if (data2.size > 0) dataGroup.addWeatherData(data2)
+            if (data3.size > 0) dataGroup.addWeatherData(data3)
+            if (data4.size > 0) dataGroup.addWeatherData(data4)
+            if (data5.size > 0) dataGroup.addWeatherData(data5)
+            forecastAdapter.submitList(dataGroup.getDataGroup())
+        }
+    }
+
+    private fun getCalendarFromDate(date: Long): Calendar? {
+        val cal = Calendar.getInstance()
+        cal.timeInMillis = date * 1000L
+        return cal
     }
 
     private fun onForecastViewStateChanged(forecastViewState: ForecastViewState){

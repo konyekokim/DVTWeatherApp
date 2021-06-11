@@ -12,7 +12,7 @@ import com.konyekokim.weather.R
 import com.konyekokim.weather.databinding.ItemForecastBinding
 
 class ForecastAdapter() :
-    ListAdapter<WeatherData, ForecastAdapter.WeatherDataItemViewHolder>(DIFF_CALLBACK) {
+    ListAdapter<List<WeatherData>, ForecastAdapter.WeatherDataItemViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherDataItemViewHolder {
         val binding = ItemForecastBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -28,17 +28,17 @@ class ForecastAdapter() :
     inner class WeatherDataItemViewHolder(private val binding: ItemForecastBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: WeatherData) {
-            binding.forecastDay.text = getDay(item.dtTxt ?: "")
-            binding.forecastTemperature.text = item.main.temp.toString().appendTempSign()
+        fun bind(item: List<WeatherData>) {
+            binding.forecastDay.text = getDay(item[0].dtTxt ?: "")
+            binding.forecastTemperature.text = item[0].main.temp.toString().appendTempSign()
             when{
-                item.weather[0].main.contains("clouds", true) -> {
+                item[0].weather[0].main.contains("clouds", true) -> {
                     binding.forecastImage.setImageResource(R.drawable.partly_sunny_icon)
                 }
-                item.weather[0].main.contains("clear", true) -> {
+                item[0].weather[0].main.contains("clear", true) -> {
                     binding.forecastImage.setImageResource(R.drawable.clear_icon)
                 }
-                item.weather[0].main.contains("rain", true) -> {
+                item[0].weather[0].main.contains("rain", true) -> {
                     binding.forecastImage.setImageResource(R.drawable.rain_icon)
                 }
                 else -> {
@@ -49,12 +49,12 @@ class ForecastAdapter() :
     }
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<WeatherData>() {
-            override fun areItemsTheSame(oldItem: WeatherData, newItem: WeatherData): Boolean {
-                return oldItem.id == newItem.id
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<List<WeatherData>>() {
+            override fun areItemsTheSame(oldItem: List<WeatherData>, newItem: List<WeatherData>): Boolean {
+                return oldItem == newItem
             }
 
-            override fun areContentsTheSame(oldItem: WeatherData, newItem: WeatherData): Boolean {
+            override fun areContentsTheSame(oldItem: List<WeatherData>, newItem: List<WeatherData>): Boolean {
                 return oldItem == newItem
             }
         }
