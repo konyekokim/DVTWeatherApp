@@ -2,6 +2,7 @@ package com.konyekokim.core.database
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
+import com.konyekokim.core.data.entities.FavoriteLocation
 import com.konyekokim.core.network.responses.*
 
 class Converter {
@@ -14,8 +15,21 @@ class Converter {
         }
 
         @TypeConverter
+        @JvmStatic
         fun toCityData(value: String): City{
             return gson.fromJson(value, City::class.java)
+        }
+
+        @TypeConverter
+        @JvmStatic
+        fun fromWindData(value: Wind): String{
+            return gson.toJson(value)
+        }
+
+        @TypeConverter
+        @JvmStatic
+        fun toWindData(value: String): Wind{
+            return gson.fromJson(value, Wind::class.java)
         }
 
         @TypeConverter

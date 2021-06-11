@@ -5,10 +5,11 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.konyekokim.core.BuildConfig
 import com.konyekokim.core.data.entities.CurrentWeather
+import com.konyekokim.core.data.entities.FavoriteLocation
 import com.konyekokim.core.data.entities.ForecastWeather
 
 @Database(
-    entities = [CurrentWeather::class, ForecastWeather::class],
+    entities = [CurrentWeather::class, ForecastWeather::class, FavoriteLocation::class],
     exportSchema = false,
     version = BuildConfig.WEATHER_DATABASE_VERSION
 )

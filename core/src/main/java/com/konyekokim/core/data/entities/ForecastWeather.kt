@@ -6,7 +6,7 @@ import com.konyekokim.core.network.responses.City
 import com.konyekokim.core.network.responses.WeatherData
 
 @Entity(tableName = "forecast_weather")
-class ForecastWeather(
+data class ForecastWeather(
     @PrimaryKey
     val ids: Int = 1,
     val name: String,

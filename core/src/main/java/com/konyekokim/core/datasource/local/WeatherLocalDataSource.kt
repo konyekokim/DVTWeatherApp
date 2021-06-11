@@ -27,7 +27,7 @@ class WeatherLocalDataSource @Inject constructor(
     suspend fun getLastSavedForecastWeather() = forecastWeatherDao.getLastSavedForecastWeather()
 
     suspend fun saveFavoriteLocation(favoriteLocation: FavoriteLocation) {
-        favoriteLocationDao.saveLocation(favoriteLocationDao)
+        favoriteLocationDao.saveLocation(favoriteLocation)
     }
 
     suspend fun getFavoriteLocations() = favoriteLocationDao.getFavoriteLocations()

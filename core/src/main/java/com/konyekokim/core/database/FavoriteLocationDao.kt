@@ -10,7 +10,7 @@ import com.konyekokim.core.data.entities.FavoriteLocation
 interface FavoriteLocationDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveLocation(favoriteLocation: FavoriteLocationDao)
+    suspend fun saveLocation(favoriteLocation: FavoriteLocation)
 
     @Query("SELECT * FROM favorite_locations")
     suspend fun getFavoriteLocations(): List<FavoriteLocation>

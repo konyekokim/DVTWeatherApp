@@ -13,6 +13,7 @@ import com.konyekokim.core.data.entities.ForecastWeather
 import com.konyekokim.core.di.provider.CoreComponentProvider
 import com.konyekokim.weather.adapter.ForecastAdapter
 import com.konyekokim.weather.databinding.FragmentWeatherBinding
+import com.konyekokim.weather.di.DaggerWeatherComponent
 import com.konyekokim.weather.di.WeatherModule
 import javax.inject.Inject
 
@@ -96,11 +97,11 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
     }
 
     private fun setUpDependencyInjection(){
-       /* DaggerWeatherComponent
+        DaggerWeatherComponent
             .builder()
             .coreComponent((appContext as CoreComponentProvider).provideCoreComponent())
             .weatherModule(WeatherModule(this))
             .build()
-            .inject(this)*/
+            .inject(this)
     }
 }
