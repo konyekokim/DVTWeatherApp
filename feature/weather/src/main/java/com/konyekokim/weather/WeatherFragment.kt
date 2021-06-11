@@ -42,6 +42,9 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
         observe(viewModel.currentByCoordinatesData, ::onCurrentWeatherViewDataChanged)
         observe(viewModel.forecastByCityData, ::onForecastViewDataChanged)
         observe(viewModel.forecastByCoordinatesData, ::onForecastViewDataChanged)
+        //test fetch
+        viewModel.getCurrentWeatherByCity("Lagos")
+        viewModel.getForecastByCity("Lagos")
     }
 
     private fun fetchWeatherData(){
