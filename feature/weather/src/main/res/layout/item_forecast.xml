@@ -15,11 +15,12 @@
         android:textColor="@color/color_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:textSize="18sp"
         tools:text="Tuesday" />
 
     <ImageView
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:id="@+id/forecast_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,6 +33,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/forecast_temperature"
         tools:text="20°"
+        android:textSize="18sp"
         android:textColor="@color/color_text"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="24dp"
