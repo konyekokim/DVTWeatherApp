@@ -6,7 +6,7 @@ data class CurrentResp(
     val visibility: Int,
     val wind: Wind,
     val clouds: Clouds,
-    val dt: Int,
+    val dt: Long,
     val id: Int,
     val name: String,
     val cod: Int,

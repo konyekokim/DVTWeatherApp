@@ -14,7 +14,7 @@ data class CurrentWeather(
     val visibility: Int,
     val wind: Wind,
     val clouds: Clouds,
-    val dt: Int,
+    val dt: Long,
     val name: String,
     val cod: Int,
     val sys: Sys,

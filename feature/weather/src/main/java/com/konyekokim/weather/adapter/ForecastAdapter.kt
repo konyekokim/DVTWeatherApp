@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.konyekokim.commons.extensions.appendTempSign
 import com.konyekokim.commons.ui.getDay
 import com.konyekokim.core.network.responses.WeatherData
 import com.konyekokim.weather.R
@@ -29,7 +30,7 @@ class ForecastAdapter() :
 
         fun bind(item: WeatherData) {
             binding.forecastDay.text = getDay(item.dtTxt ?: "")
-            binding.forecastTemperature.text = (item.main.temp.toString() + "°C")
+            binding.forecastTemperature.text = item.main.temp.toString().appendTempSign()
             when{
                 item.weather[0].main.contains("clouds", true) -> {
                     binding.forecastImage.setImageResource(R.drawable.partly_sunny_icon)
