@@ -1,16 +1,25 @@
 package com.konyekokim.weather
 
+import android.Manifest
+import android.app.AlertDialog
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.location.*
 import com.konyekokim.commons.extensions.appContext
 import com.konyekokim.commons.extensions.appendTempSign
 import com.konyekokim.commons.extensions.observe
 import com.konyekokim.commons.extensions.showSnackbar
 import com.konyekokim.commons.ui.getDateString
+import com.konyekokim.commons.utils.PermissionUtils
+import com.konyekokim.commons.utils.RequestPermissionHandler
 import com.konyekokim.core.data.DataState
 import com.konyekokim.core.data.entities.CurrentWeather
 import com.konyekokim.core.data.entities.ForecastWeather
@@ -26,6 +35,8 @@ import javax.inject.Inject
 
 class WeatherFragment : Fragment(R.layout.fragment_weather) {
 
+    private val LOCATION_PERMISSION_REQUEST_CODE = 419
+
     @Inject
     lateinit var viewModel: WeatherViewModel
 
@@ -33,14 +44,92 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
 
     private lateinit var forecastAdapter: ForecastAdapter
 
+    private lateinit var permissionHandler: RequestPermissionHandler
+
+    private var fusedLocationClient: FusedLocationProviderClient?  = null
+
+    var lat = 0.00
+    var lon = 0.00
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         setUpDependencyInjection()
     }
 
+    override fun onStart() {
+        super.onStart()
+        when {
+            PermissionUtils.isAccessFineLocationGranted(requireActivity()) -> {
+                when {
+                    PermissionUtils.isLocationEnabled(requireActivity()) -> {
+                        setUpLocationListener()
+                    }
+                    else -> {
+                        //PermissionUtils.showGPSNotEnabledDialog(this)
+                    }
+                }
+            }
+            else -> {
+                PermissionUtils.requestAccessFineLocationPermission(
+                    requireActivity() as AppCompatActivity,
+                    LOCATION_PERMISSION_REQUEST_CODE
+                )
+            }
+        }
+    }
+
+    val locationRequest = LocationRequest().setInterval(2000).setFastestInterval(2000)
+        .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+
+    var count = 0
+
+    private fun setUpLocationListener() {
+        val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        // for getting the current location update after every 2 seconds with high accuracy
+        val locationRequest = LocationRequest().setInterval(2000).setFastestInterval(2000)
+            .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return
+        }
+        fusedLocationProviderClient.requestLocationUpdates(
+            locationRequest,
+            object : LocationCallback() {
+                override fun onLocationResult(locationResult: LocationResult) {
+                    super.onLocationResult(locationResult)
+                    for (location in locationResult.locations) {
+                        lat = location.latitude
+                        lon = location.longitude
+                        if(count < 1) {
+                            count++
+                            fetchWeatherDataFromCoordinates(lat, lon)
+                        }
+                    }
+                    // Few more things we can do here:
+                    // For example: Update the location of user on server
+                }
+            },
+            Looper.myLooper()
+        )
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentWeatherBinding.bind(view)
+        initPermissions()
         setUpForecastRecyclerView()
         observe(viewModel.currentByCityState, ::onCurrentWeatherViewStateChanged)
         observe(viewModel.currentByCoordinatesState, ::onCurrentWeatherViewStateChanged)
@@ -51,12 +140,82 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
         observe(viewModel.forecastByCityData, ::onForecastViewDataChanged)
         observe(viewModel.forecastByCoordinatesData, ::onForecastViewDataChanged)
         //test fetch
-        viewModel.getCurrentWeatherByCity("Lagos")
-        viewModel.getForecastByCity("Lagos")
+        /*viewModel.getCurrentWeatherByCity("Lagos")
+        viewModel.getForecastByCity("Lagos")*/
     }
 
-    private fun fetchWeatherData(){
+    private fun fetchWeatherDataFromCoordinates(lat: Double, lng: Double){
+        viewModel.getCurrentWeatherByCoordinates(lat, lng)
+        viewModel.getForecastByCoordinates(lat, lng)
+    }
 
+    private fun initPermissions(){
+        initializePermissionHandler()
+        handleRequestOfPermissions()
+    }
+
+    private fun handleRequestOfPermissions(){
+        permissionHandler.requestPermission()
+    }
+
+    private fun initializePermissionHandler(){
+        permissionHandler = RequestPermissionHandler(
+            fragment = this@WeatherFragment,
+            permissions = setOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ),
+            listener = object: RequestPermissionHandler.Listener{
+                override fun onComplete(
+                    grantedPermissions: Set<String>,
+                    deniedPermissions: Set<String>
+                ) {
+                    if (Manifest.permission.ACCESS_COARSE_LOCATION in grantedPermissions
+                        && Manifest.permission.ACCESS_FINE_LOCATION in grantedPermissions
+                    ) {
+                        if(PermissionUtils.isLocationEnabled(requireContext()))
+                            setUpLocationListener()
+                        else
+                            showSnackbar("GPS not enabled")
+                    }
+                }
+
+                override fun onShowPermissionRationale(permissions: Set<String>): Boolean {
+                    val message: String =
+                        if (Manifest.permission.ACCESS_FINE_LOCATION in permissions
+                            || Manifest.permission.ACCESS_FINE_LOCATION in permissions
+                        ) {
+                            "LOCATION"
+                        } else ""
+                    AlertDialog.Builder(context).setMessage(
+                        "To give you great experience, we need $message permissions"
+                    )
+                        .setPositiveButton("OK") { _, _ ->
+                            permissionHandler.retryRequestDeniedPermission()
+                        }
+                        .setNegativeButton("Cancel") { dialog, _ ->
+                            permissionHandler.cancel()
+                            dialog.dismiss()
+                        }
+                        .show()
+                    return true
+                }
+
+                override fun onShowSettingRationale(permissions: Set<String>): Boolean {
+                    AlertDialog.Builder(context)
+                        .setMessage("Go Settings -> Permission. Turn on Permissions")
+                        .setPositiveButton("Settings") { _, _ ->
+                            permissionHandler.requestPermissionInSetting()
+                        }
+                        .setNegativeButton("Cancel") { dialog, _ ->
+                            permissionHandler.cancel()
+                            dialog.cancel()
+                        }
+                        .show()
+                    return true
+                }
+            }
+        )
     }
 
     private fun onCurrentWeatherViewDataChanged(currentWeather: CurrentWeather){
@@ -124,18 +283,25 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
             val calendar5 = calendar0.clone() as Calendar
             calendar5.add(Calendar.DAY_OF_YEAR, 5)
             for (data in response.list!!) {
-                if (getCalendarFromDate(data.dt)!!.before(calendar1)) {
-                    data0.add(data)
-                } else if (getCalendarFromDate(data.dt)!!.before(calendar2)) {
-                    data1.add(data)
-                } else if (getCalendarFromDate(data.dt)!!.before(calendar3)) {
-                    data2.add(data)
-                } else if (getCalendarFromDate(data.dt)!!.before(calendar4)) {
-                    data3.add(data)
-                } else if (getCalendarFromDate(data.dt)!!.before(calendar5)) {
-                    data4.add(data)
-                } else {
-                    data5.add(data)
+                when {
+                    getCalendarFromDate(data.dt)!!.before(calendar1) -> {
+                        data0.add(data)
+                    }
+                    getCalendarFromDate(data.dt)!!.before(calendar2) -> {
+                        data1.add(data)
+                    }
+                    getCalendarFromDate(data.dt)!!.before(calendar3) -> {
+                        data2.add(data)
+                    }
+                    getCalendarFromDate(data.dt)!!.before(calendar4) -> {
+                        data3.add(data)
+                    }
+                    getCalendarFromDate(data.dt)!!.before(calendar5) -> {
+                        data4.add(data)
+                    }
+                    else -> {
+                        data5.add(data)
+                    }
                 }
             }
             val dataGroup = WeatherDataGroup(data0)

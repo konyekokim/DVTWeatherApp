@@ -37,6 +37,9 @@ dependencies {
     // Circle ImageView
     implementation(Dependencies.CircleImageView.circleImageView)
 
+    //Google Play Service
+    implementation(Dependencies.GooglePlayService.playServiceLocation)
+
     // Dagger
     implementation(Dependencies.Dagger.dagger)
     kapt(Dependencies.Dagger.compiler)

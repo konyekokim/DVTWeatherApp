@@ -40,4 +40,7 @@ object Versions {
     // Circle ImageView
     const val circleImageView = "2.2.0"
 
+    //Google Play Service
+    const val googlePlayService = "18.0.0"
+
 }

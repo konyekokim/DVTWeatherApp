@@ -94,4 +94,8 @@ object Dependencies {
     object CircleImageView {
         const val circleImageView = "de.hdodenhof:circleimageview:${Versions.circleImageView}"
     }
+
+    object GooglePlayService{
+        const val playServiceLocation = "com.google.android.gms:play-services-location:${Versions.googlePlayService}"
+    }
 }
