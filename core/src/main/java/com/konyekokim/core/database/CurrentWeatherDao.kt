@@ -13,6 +13,6 @@ interface CurrentWeatherDao {
     suspend fun saveCurrentWeather(currentWeather: CurrentWeather)
 
     @Query("SELECT * FROM current_weather WHERE ids = 1")
-    suspend fun getLastSavedCurrentWeather(): CurrentWeather
+    suspend fun getLastSavedCurrentWeather(): CurrentWeather?
 
 }
