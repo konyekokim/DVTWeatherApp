@@ -49,6 +49,8 @@ dependencies {
     implementation(Dependencies.Retrofit.gson)
     implementation(Dependencies.OkHttp.okhttp)
 
+    implementation(Dependencies.ConnectivityManager.connectivityManager)
+
     // Test
     testImplementation(project(":lib:testcommons"))
     testImplementation(Dependencies.Test.archCore)

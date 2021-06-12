@@ -43,4 +43,7 @@ object Versions {
     //Google Play Service
     const val googlePlayService = "18.0.0"
 
+    //Connectivity Library
+    const val networkManager = "0.0.2"
+
 }

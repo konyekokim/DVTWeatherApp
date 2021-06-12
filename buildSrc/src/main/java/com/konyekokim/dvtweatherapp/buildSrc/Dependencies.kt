@@ -98,4 +98,8 @@ object Dependencies {
     object GooglePlayService{
         const val playServiceLocation = "com.google.android.gms:play-services-location:${Versions.googlePlayService}"
     }
+
+    object ConnectivityManager{
+        const val connectivityManager = "com.github.jumadeveloper:networkmanager:${Versions.networkManager}"
+    }
 }
