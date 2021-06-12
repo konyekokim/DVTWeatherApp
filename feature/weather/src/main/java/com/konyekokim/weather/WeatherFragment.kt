@@ -51,10 +51,12 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
     private lateinit var permissionHandler: RequestPermissionHandler
 
     private var currentLocation: FavoriteLocation? = null
+    private var mCurrentWeather: CurrentWeather? = null
     private var favoriteCites: List<FavoriteLocation> = ArrayList()
 
     var lat = 0.00
     var lon = 0.00
+    var count = 0
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -82,8 +84,6 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
             }
         }
     }
-
-    var count = 0
 
     private fun setUpLocationListener() {
         val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
@@ -157,7 +157,11 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
             viewModel.getFavoriteLocations()
         }
         binding.addToFavoriteView.setOnClickListener {
-            addCityToFavorite()
+            if(favoriteCites.isNotEmpty() && mCurrentWeather != null && favoriteCites.any { it.name == mCurrentWeather?.name + " , " + mCurrentWeather?.sys?.country }){
+                deleteCityFromFavorite(mCurrentWeather?.name + " , " + mCurrentWeather?.sys?.country)
+            } else  {
+                addCityToFavorite()
+            }
         }
     }
 
@@ -167,6 +171,10 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
             addedToFavoritesState()
             viewModel.getFavoriteLocations()
         }
+    }
+
+    private fun deleteCityFromFavorite(cityName: String){
+        viewModel.deleteFavoriteLocation(cityName)
     }
 
     private fun fetchWeatherDataFromCoordinates(lat: Double, lng: Double){
@@ -248,8 +256,8 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
         )
     }
 
-    private fun checkIfLocationSavedAndShowData(currentWeather: CurrentWeather){
-        if(favoriteCites.any { it.name == currentWeather.name + " , " + currentWeather.sys?.country }){
+    private fun checkIfLocationSavedAndShowData(){
+        if(mCurrentWeather != null && favoriteCites.any { it.name == mCurrentWeather?.name + " , " + mCurrentWeather?.sys?.country }){
             addedToFavoritesState()
         } else {
             addCityToFavoritesState()
@@ -266,6 +274,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
     }
 
     private fun onCurrentWeatherViewDataChanged(currentWeather: CurrentWeather){
+        mCurrentWeather = currentWeather
         when{
             currentWeather.weather!![0].main.contains("clouds", true) -> {
                 binding.weatherScrollView.setBackgroundResource(R.color.color_cloudy)
@@ -280,7 +289,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
                 binding.weatherThemeImg.setImageResource(R.drawable.forest_rainy)
             }
         }
-        checkIfLocationSavedAndShowData(currentWeather)
+        checkIfLocationSavedAndShowData()
         binding.todaysDate.text = getDateString(currentWeather.dt ?: 1L)
         binding.location.text = (currentWeather.name + " , " + currentWeather.sys?.country)
         binding.temperature.text = currentWeather.main?.temp.toString().appendTempSign()
