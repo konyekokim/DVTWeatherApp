@@ -158,6 +158,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
             Log.e("Favorite Cities", favoriteCites.toString())
             if(favoriteCites.isNotEmpty() && mCurrentWeather != null && favoriteCites.any { it.name == mCurrentWeather?.name + " , " + mCurrentWeather?.sys?.country }){
                 deleteCityFromFavorite(mCurrentWeather?.name + " , " + mCurrentWeather?.sys?.country)
+                addCityToFavoritesState()
             } else  {
                 addCityToFavorite()
             }
