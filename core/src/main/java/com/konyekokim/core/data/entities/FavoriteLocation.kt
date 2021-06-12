@@ -7,6 +7,6 @@ import androidx.room.PrimaryKey
 data class FavoriteLocation(
     @PrimaryKey
     val name: String,
-    val lat: Double,
-    val lng: Double
+    val lat: Double?,
+    val lng: Double?
 )

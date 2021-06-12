@@ -24,6 +24,7 @@ import com.konyekokim.commons.utils.PermissionUtils
 import com.konyekokim.commons.utils.RequestPermissionHandler
 import com.konyekokim.core.data.DataState
 import com.konyekokim.core.data.entities.CurrentWeather
+import com.konyekokim.core.data.entities.FavoriteLocation
 import com.konyekokim.core.data.entities.ForecastWeather
 import com.konyekokim.core.di.provider.CoreComponentProvider
 import com.konyekokim.core.network.responses.WeatherData
@@ -32,6 +33,7 @@ import com.konyekokim.weather.adapter.ForecastAdapter
 import com.konyekokim.weather.databinding.FragmentWeatherBinding
 import com.konyekokim.weather.di.DaggerWeatherComponent
 import com.konyekokim.weather.di.WeatherModule
+import com.konyekokim.weather.utils.showFavoriteCityDialogs
 import java.util.*
 import javax.inject.Inject
 
@@ -47,6 +49,8 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
     private lateinit var forecastAdapter: ForecastAdapter
 
     private lateinit var permissionHandler: RequestPermissionHandler
+
+    private var currentLocation: FavoriteLocation? = null
 
     var lat = 0.00
     var lon = 0.00
@@ -125,11 +129,14 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
         observe(viewModel.currentByCoordinatesState, ::onCurrentWeatherViewStateChanged)
         observe(viewModel.forecastByCityState, ::onForecastViewStateChanged)
         observe(viewModel.forecastByCoordinatesState, ::onForecastViewStateChanged)
+        observe(viewModel.favoriteLocationState, ::onFavoriteLocationViewStateChanged)
         observe(viewModel.currentByCityData, ::onCurrentWeatherViewDataChanged)
         observe(viewModel.currentByCoordinatesData, ::onCurrentWeatherViewDataChanged)
         observe(viewModel.forecastByCityData, ::onForecastViewDataChanged)
         observe(viewModel.forecastByCoordinatesData, ::onForecastViewDataChanged)
+        observe(viewModel.favoriteLocationData, ::onFavoriteLocationViewDataChanged)
         setUpCitySearchView()
+        initFavoriteViews()
     }
 
     private fun setUpCitySearchView(){
@@ -140,6 +147,21 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
                 true
             }
             false
+        }
+    }
+
+    private fun initFavoriteViews(){
+        binding.favoriteView.setOnClickListener {
+            viewModel.getFavoriteLocations()
+        }
+        binding.addToFavoriteView.setOnClickListener {
+            addCityToFavorite()
+        }
+    }
+
+    private fun addCityToFavorite(){
+        if(currentLocation != null){
+            viewModel.saveFavoriteLocation(currentLocation!!)
         }
     }
 
@@ -244,6 +266,11 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
         binding.minTemp.text = currentWeather.main?.tempMin.toString().appendTempSign()
         binding.maxTemp.text = currentWeather.main?.tempMax.toString().appendTempSign()
         binding.currentTemp.text = currentWeather.main?.temp.toString().appendTempSign()
+        currentLocation = FavoriteLocation(
+            name = currentWeather.name + " , " + currentWeather.sys?.country,
+            lat = currentWeather.coord?.lat,
+            lng = currentWeather.coord?.lon
+        )
     }
 
     private fun onCurrentWeatherViewStateChanged(currentWeatherViewState: CurrentWeatherViewState){
@@ -326,6 +353,27 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
 
     private fun onForecastViewStateChanged(forecastViewState: ForecastViewState){
         when(val dataState = forecastViewState.dataState){
+            is DataState.Error -> {
+                showSnackbar(dataState.message)
+            }
+            else -> {
+                //do nothing
+            }
+        }
+    }
+
+    private fun onFavoriteLocationViewDataChanged(favoriteLocations: List<FavoriteLocation>){
+        if(favoriteLocations.isNotEmpty()) {
+            requireContext().showFavoriteCityDialogs(favoriteLocations) { cityName ->
+                fetchWeatherDataByCity(cityName)
+            }
+        } else {
+            showSnackbar(getString(R.string.no_cities_saved_as_favorite))
+        }
+    }
+
+    private fun onFavoriteLocationViewStateChanged(favoriteLocationViewState: FavoriteLocationViewState){
+        when(val dataState = favoriteLocationViewState.dataState){
             is DataState.Error -> {
                 showSnackbar(dataState.message)
             }

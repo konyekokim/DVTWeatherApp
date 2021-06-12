@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.konyekokim.core.data.DataState
 import com.konyekokim.core.data.Result
 import com.konyekokim.core.data.entities.CurrentWeather
+import com.konyekokim.core.data.entities.FavoriteLocation
 import com.konyekokim.core.data.entities.ForecastWeather
 import com.konyekokim.core.repository.WeatherRepository
 import kotlinx.coroutines.launch
@@ -48,6 +49,14 @@ class WeatherViewModel @Inject constructor(
     private val _forecastByCoordinatesState = MutableLiveData<ForecastViewState>()
     val forecastByCoordinatesState : LiveData<ForecastViewState>
         get() = _forecastByCoordinatesState
+
+    private val _favoriteLocationState = MutableLiveData<FavoriteLocationViewState>()
+    val favoriteLocationState : LiveData<FavoriteLocationViewState>
+        get() = _favoriteLocationState
+
+    private val _favoriteLocationData = MutableLiveData<List<FavoriteLocation>>()
+    val favoriteLocationData : LiveData<List<FavoriteLocation>>
+        get() = _favoriteLocationData
 
     fun getCurrentWeatherByCity(city: String){
         _currentByCityState.postValue(CurrentWeatherViewState(dataState = DataState.Loading))
@@ -121,9 +130,32 @@ class WeatherViewModel @Inject constructor(
         }
     }
 
+    fun saveFavoriteLocation(favoriteLocation: FavoriteLocation){
+        viewModelScope.launch {
+            weatherRepository.saveFavoriteLocation(favoriteLocation)
+        }
+    }
+
+    fun getFavoriteLocations(){
+        _favoriteLocationState.postValue(FavoriteLocationViewState(dataState = DataState.Loading))
+        viewModelScope.launch {
+            val favoriteLocations = weatherRepository.getFavoriteLocations()
+            if(!favoriteLocations.isNullOrEmpty()){
+                _favoriteLocationState.postValue(FavoriteLocationViewState(dataState = DataState.Success))
+                _favoriteLocationData.postValue(favoriteLocations)
+            } else {
+                _favoriteLocationState.postValue(
+                    FavoriteLocationViewState(dataState = DataState.Error(
+                        FAV_LOC_ERROR_MESSAGE))
+                )
+            }
+        }
+    }
+
     companion object {
         @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-        const val ERROR_MESSAGE = "Error occured during fetching weather information"
+        const val ERROR_MESSAGE = "Error occurred during fetching weather information"
+        const val FAV_LOC_ERROR_MESSAGE = "Error occurred fetching favorite Locations"
     }
 
 }
