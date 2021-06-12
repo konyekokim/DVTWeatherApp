@@ -5,18 +5,23 @@ import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.konyekokim.core.data.entities.FavoriteLocation
-import com.konyekokim.weather.R
 import com.konyekokim.weather.adapter.FavoriteCityAdapter
+import com.konyekokim.weather.databinding.DialogFavoriteCitiesBinding
 
 fun Context?.showFavoriteCityDialogs(favoriteCities: List<FavoriteLocation>, onCityClicked: (cityName: String) ->  Unit){
-    val root = LayoutInflater.from(this)
-        .inflate(R.layout.dialog_favorite_cities, null)
+    val bind: DialogFavoriteCitiesBinding = DialogFavoriteCitiesBinding.inflate(LayoutInflater.from(this))
+
     val favoriteCityAdapter = FavoriteCityAdapter {
         onCityClicked(it)
     }
+    with(bind.favoriteCityList){
+        layoutManager = LinearLayoutManager(this@showFavoriteCityDialogs, LinearLayoutManager.VERTICAL, false)
+        adapter = favoriteCityAdapter
+    }
     val dialog = AlertDialog.Builder(this)
-        .setView(root).create()
+        .setView(bind.root).create()
     dialog.setCancelable(true)
     dialog.window?.setBackgroundDrawable(
         ColorDrawable(

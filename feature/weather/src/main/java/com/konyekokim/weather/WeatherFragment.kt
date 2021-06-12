@@ -155,6 +155,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
             viewModel.getFavoriteLocations()
         }
         binding.addToFavoriteView.setOnClickListener {
+            Log.e("Favorite Cities", favoriteCites.toString())
             if(favoriteCites.isNotEmpty() && mCurrentWeather != null && favoriteCites.any { it.name == mCurrentWeather?.name + " , " + mCurrentWeather?.sys?.country }){
                 deleteCityFromFavorite(mCurrentWeather?.name + " , " + mCurrentWeather?.sys?.country)
             } else  {
@@ -315,7 +316,6 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
 
     private fun onForecastViewDataChanged(forecastWeather: ForecastWeather){
         prepareForecastData(forecastWeather)
-        //forecastAdapter.submitList(forecastWeather.list)
     }
 
     private fun prepareForecastData(response: ForecastWeather){
@@ -393,8 +393,9 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
 
     private fun onFavoriteLocationViewDataChanged(favoriteLocations: List<FavoriteLocation>){
         if(favoriteLocations.isNotEmpty()) {
+            favoriteCites = favoriteLocations
             if(!justLaunched) {
-                requireContext().showFavoriteCityDialogs(favoriteLocations) { cityName ->
+                requireContext().showFavoriteCityDialogs(favoriteCites) { cityName ->
                     fetchWeatherDataByCity(cityName)
                 }
             }
