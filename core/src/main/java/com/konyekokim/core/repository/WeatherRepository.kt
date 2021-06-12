@@ -72,4 +72,8 @@ class WeatherRepository @Inject constructor(
     }
 
     suspend fun getFavoriteLocations() = localDataSource.getFavoriteLocations()
+
+    suspend fun deleteFavoriteLocation(cityName: String){
+        localDataSource.deleteFavoriteLocation(cityName)
+    }
 }

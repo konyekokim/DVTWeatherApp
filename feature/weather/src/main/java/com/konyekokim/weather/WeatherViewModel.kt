@@ -152,6 +152,12 @@ class WeatherViewModel @Inject constructor(
         }
     }
 
+    fun deleteFavoriteLocation(cityName: String){
+        viewModelScope.launch {
+            weatherRepository.deleteFavoriteLocation(cityName)
+        }
+    }
+
     companion object {
         @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
         const val ERROR_MESSAGE = "Error occurred during fetching weather information"

@@ -15,4 +15,6 @@ interface FavoriteLocationDao {
     @Query("SELECT * FROM favorite_locations")
     suspend fun getFavoriteLocations(): List<FavoriteLocation>
 
+    @Query("delete from favorite_locations where name=:name")
+    suspend fun deleteFavoriteLocation(name: String)
 }

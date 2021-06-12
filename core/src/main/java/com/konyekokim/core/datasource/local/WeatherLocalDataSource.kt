@@ -32,4 +32,8 @@ class WeatherLocalDataSource @Inject constructor(
 
     suspend fun getFavoriteLocations() = favoriteLocationDao.getFavoriteLocations()
 
+    suspend fun deleteFavoriteLocation(cityName: String){
+        favoriteLocationDao.deleteFavoriteLocation(cityName)
+    }
+
 }
