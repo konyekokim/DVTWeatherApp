@@ -19,6 +19,6 @@
         tools:text="Lagos, NG"
         android:textColor="@color/color_on_background"
         android:textSize="18sp"
-        android:fontFamily="@font/gilroy_bold"/>
+        android:fontFamily="@font/gilroy_medium"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
