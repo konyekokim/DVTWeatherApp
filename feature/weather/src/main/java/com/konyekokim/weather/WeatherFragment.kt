@@ -15,10 +15,7 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.location.*
-import com.konyekokim.commons.extensions.appContext
-import com.konyekokim.commons.extensions.appendTempSign
-import com.konyekokim.commons.extensions.observe
-import com.konyekokim.commons.extensions.showSnackbar
+import com.konyekokim.commons.extensions.*
 import com.konyekokim.commons.ui.getDateString
 import com.konyekokim.commons.utils.PermissionUtils
 import com.konyekokim.commons.utils.RequestPermissionHandler
@@ -57,6 +54,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
     var lat = 0.00
     var lon = 0.00
     var count = 0
+    var justLaunched = true
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -169,7 +167,6 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
         if(currentLocation != null){
             viewModel.saveFavoriteLocation(currentLocation!!)
             addedToFavoritesState()
-            viewModel.getFavoriteLocations()
         }
     }
 
@@ -257,6 +254,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
     }
 
     private fun checkIfLocationSavedAndShowData(){
+        binding.addToFavoriteView.show()
         if(mCurrentWeather != null && favoriteCites.any { it.name == mCurrentWeather?.name + " , " + mCurrentWeather?.sys?.country }){
             addedToFavoritesState()
         } else {
@@ -395,12 +393,15 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
 
     private fun onFavoriteLocationViewDataChanged(favoriteLocations: List<FavoriteLocation>){
         if(favoriteLocations.isNotEmpty()) {
-            requireContext().showFavoriteCityDialogs(favoriteLocations) { cityName ->
-                fetchWeatherDataByCity(cityName)
+            if(!justLaunched) {
+                requireContext().showFavoriteCityDialogs(favoriteLocations) { cityName ->
+                    fetchWeatherDataByCity(cityName)
+                }
             }
         } else {
             showSnackbar(getString(R.string.no_cities_saved_as_favorite))
         }
+        justLaunched = false
     }
 
     private fun onFavoriteLocationViewStateChanged(favoriteLocationViewState: FavoriteLocationViewState){

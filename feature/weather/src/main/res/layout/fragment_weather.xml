@@ -139,6 +139,7 @@
                 android:id="@+id/addToFavoriteView"
                 android:layout_width="0dp"
                 android:layout_height="48dip"
+                android:visibility="gone"
                 android:layout_marginHorizontal="54dp"
                 app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="8dip"
