@@ -7,12 +7,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.konyekokim.commons.extensions.appendTempSign
 import com.konyekokim.commons.ui.getDay
+import com.konyekokim.commons.utils.GenericDiffCallback
 import com.konyekokim.core.network.responses.WeatherData
 import com.konyekokim.weather.R
 import com.konyekokim.weather.databinding.ItemForecastBinding
 
 class ForecastAdapter() :
-    ListAdapter<List<WeatherData>, ForecastAdapter.WeatherDataItemViewHolder>(DIFF_CALLBACK) {
+    ListAdapter<List<WeatherData>, ForecastAdapter.WeatherDataItemViewHolder>(GenericDiffCallback<List<WeatherData>>()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherDataItemViewHolder {
         val binding = ItemForecastBinding.inflate(LayoutInflater.from(parent.context), parent, false)
