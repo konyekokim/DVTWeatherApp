@@ -53,6 +53,7 @@
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
+            android:src="@drawable/ic_loved"
             android:id="@+id/favoriteImgView"
             android:layout_gravity="center"/>
 
@@ -74,12 +75,13 @@
             android:layout_height="wrap_content">
 
             <ImageView
+                android:id="@+id/weather_theme_img"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                tools:src="@drawable/forest_sunny"
                 app:layout_constraintTop_toTopOf="parent"
-                android:id="@+id/weather_theme_img"/>
+                tools:layout_editor_absoluteX="0dp"
+                tools:src="@drawable/forest_sunny" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -170,6 +172,7 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:id="@+id/love_img"
+                    android:src="@drawable/ic_loved"
                     android:layout_gravity="center_vertical|end"
                     android:layout_marginEnd="16dp"/>
 

@@ -51,6 +51,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
     private lateinit var permissionHandler: RequestPermissionHandler
 
     private var currentLocation: FavoriteLocation? = null
+    private var favoriteCites: List<FavoriteLocation> = ArrayList()
 
     var lat = 0.00
     var lon = 0.00
@@ -137,6 +138,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
         observe(viewModel.favoriteLocationData, ::onFavoriteLocationViewDataChanged)
         setUpCitySearchView()
         initFavoriteViews()
+        viewModel.getFavoriteLocations()
     }
 
     private fun setUpCitySearchView(){
@@ -162,6 +164,8 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
     private fun addCityToFavorite(){
         if(currentLocation != null){
             viewModel.saveFavoriteLocation(currentLocation!!)
+            addedToFavoritesState()
+            viewModel.getFavoriteLocations()
         }
     }
 
@@ -244,6 +248,23 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
         )
     }
 
+    private fun checkIfLocationSavedAndShowData(currentWeather: CurrentWeather){
+        if(favoriteCites.any { it.name == currentWeather.name + " , " + currentWeather.sys?.country }){
+            addedToFavoritesState()
+        } else {
+            addCityToFavoritesState()
+        }
+    }
+
+    private fun addedToFavoritesState(){
+        binding.addToFavoriteText.text = getString(R.string.added_to_favorites)
+        binding.loveImg.setImageResource(R.drawable.ic_loved)
+    }
+    private fun addCityToFavoritesState(){
+        binding.addToFavoriteText.text = getString(R.string.add_city_to_favorites)
+        binding.loveImg.setImageResource(R.drawable.ic_love)
+    }
+
     private fun onCurrentWeatherViewDataChanged(currentWeather: CurrentWeather){
         when{
             currentWeather.weather!![0].main.contains("clouds", true) -> {
@@ -259,6 +280,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
                 binding.weatherThemeImg.setImageResource(R.drawable.forest_rainy)
             }
         }
+        checkIfLocationSavedAndShowData(currentWeather)
         binding.todaysDate.text = getDateString(currentWeather.dt ?: 1L)
         binding.location.text = (currentWeather.name + " , " + currentWeather.sys?.country)
         binding.temperature.text = currentWeather.main?.temp.toString().appendTempSign()

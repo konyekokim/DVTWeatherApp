@@ -5,6 +5,7 @@
     <string name="current">current</string>
     <string name="max">max</string>
     <string name="add_city_to_favorites">Add City to Favorites</string>
+    <string name="added_to_favorites">Added to Favorites</string>
     <string name="your_favorite_cities">Your Favorite Cities</string>
     <string name="no_cities_saved_as_favorite">No City Saved in Favorites</string>
 </resources>
