@@ -30,6 +30,7 @@ import com.konyekokim.weather.adapter.ForecastAdapter
 import com.konyekokim.weather.databinding.FragmentWeatherBinding
 import com.konyekokim.weather.di.DaggerWeatherComponent
 import com.konyekokim.weather.di.WeatherModule
+import com.konyekokim.weather.utils.checkConnectivity
 import com.konyekokim.weather.utils.showFavoriteCityDialogs
 import java.util.*
 import javax.inject.Inject
@@ -67,6 +68,10 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
             PermissionUtils.isAccessFineLocationGranted(requireActivity()) -> {
                 when {
                     PermissionUtils.isLocationEnabled(requireActivity()) -> {
+                        requireContext().checkConnectivity {
+                            if(it) setUpLocationListener()
+                            else getLastSavedWeatherInfo()
+                        }
                         setUpLocationListener()
                     }
                     else -> {
@@ -81,6 +86,11 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
                 )
             }
         }
+    }
+
+    private fun getLastSavedWeatherInfo(){
+        viewModel.getLastSavedCurrentWeather()
+        viewModel.getLastSavedForecastWeather()
     }
 
     private fun setUpLocationListener() {
@@ -122,7 +132,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentWeatherBinding.bind(view)
-        initPermissions()
+        //initPermissions()
         setUpForecastRecyclerView()
         observe(viewModel.currentByCityState, ::onCurrentWeatherViewStateChanged)
         observe(viewModel.currentByCoordinatesState, ::onCurrentWeatherViewStateChanged)
@@ -184,75 +194,6 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
     private fun fetchWeatherDataByCity(city: String){
         viewModel.getCurrentWeatherByCity(city)
         viewModel.getForecastByCity(city)
-    }
-
-    private fun initPermissions(){
-        initializePermissionHandler()
-        handleRequestOfPermissions()
-    }
-
-    private fun handleRequestOfPermissions(){
-        permissionHandler.requestPermission()
-    }
-
-    private fun initializePermissionHandler(){
-        permissionHandler = RequestPermissionHandler(
-            fragment = this@WeatherFragment,
-            permissions = setOf(
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ),
-            listener = object: RequestPermissionHandler.Listener{
-                override fun onComplete(
-                    grantedPermissions: Set<String>,
-                    deniedPermissions: Set<String>
-                ) {
-                    if (Manifest.permission.ACCESS_COARSE_LOCATION in grantedPermissions
-                        && Manifest.permission.ACCESS_FINE_LOCATION in grantedPermissions
-                    ) {
-                        if(PermissionUtils.isLocationEnabled(requireContext()))
-                            setUpLocationListener()
-                        else
-                            showSnackbar("GPS not enabled")
-                    }
-                }
-
-                override fun onShowPermissionRationale(permissions: Set<String>): Boolean {
-                    val message: String =
-                        if (Manifest.permission.ACCESS_FINE_LOCATION in permissions
-                            || Manifest.permission.ACCESS_FINE_LOCATION in permissions
-                        ) {
-                            "LOCATION"
-                        } else ""
-                    AlertDialog.Builder(context).setMessage(
-                        "To give you great experience, we need $message permissions"
-                    )
-                        .setPositiveButton("OK") { _, _ ->
-                            permissionHandler.retryRequestDeniedPermission()
-                        }
-                        .setNegativeButton("Cancel") { dialog, _ ->
-                            permissionHandler.cancel()
-                            dialog.dismiss()
-                        }
-                        .show()
-                    return true
-                }
-
-                override fun onShowSettingRationale(permissions: Set<String>): Boolean {
-                    AlertDialog.Builder(context)
-                        .setMessage("Go Settings -> Permission. Turn on Permissions")
-                        .setPositiveButton("Settings") { _, _ ->
-                            permissionHandler.requestPermissionInSetting()
-                        }
-                        .setNegativeButton("Cancel") { dialog, _ ->
-                            permissionHandler.cancel()
-                            dialog.cancel()
-                        }
-                        .show()
-                    return true
-                }
-            }
-        )
     }
 
     private fun checkIfLocationSavedAndShowData(){
@@ -442,6 +383,30 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
                 imm.hideSoftInputFromWindow(requireView().windowToken, 0)
             } catch (e: Exception) {
                 e.printStackTrace()
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            LOCATION_PERMISSION_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    when {
+                        PermissionUtils.isLocationEnabled(requireContext()) -> {
+                            setUpLocationListener()
+                        }
+                        else -> {
+                            showSnackbar("GPS not enabled")
+                        }
+                    }
+                } else {
+                    showSnackbar("Location Permission not Granted")
+                }
             }
         }
     }

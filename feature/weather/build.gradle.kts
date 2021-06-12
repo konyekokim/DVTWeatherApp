@@ -49,11 +49,11 @@ dependencies {
     implementation(Dependencies.Retrofit.gson)
     implementation(Dependencies.OkHttp.okhttp)
 
-    implementation(Dependencies.ConnectivityManager.connectivityManager)
-
     // Test
     testImplementation(project(":lib:testcommons"))
     testImplementation(Dependencies.Test.archCore)
     testImplementation(Dependencies.Test.coroutines)
     testImplementation(Dependencies.Test.mockk)
+
+    implementation(Dependencies.ConnectionManager.connectionManager)
 }
