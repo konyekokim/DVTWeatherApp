@@ -12,14 +12,6 @@ import com.konyekokim.weather.databinding.DialogFavoriteCitiesBinding
 
 fun Context?.showFavoriteCityDialogs(favoriteCities: List<FavoriteLocation>, onCityClicked: (cityName: String) ->  Unit){
     val bind: DialogFavoriteCitiesBinding = DialogFavoriteCitiesBinding.inflate(LayoutInflater.from(this))
-
-    val favoriteCityAdapter = FavoriteCityAdapter {
-        onCityClicked(it)
-    }
-    with(bind.favoriteCityList){
-        layoutManager = LinearLayoutManager(this@showFavoriteCityDialogs, LinearLayoutManager.VERTICAL, false)
-        adapter = favoriteCityAdapter
-    }
     val dialog = AlertDialog.Builder(this)
         .setView(bind.root).create()
     dialog.setCancelable(true)
@@ -28,6 +20,14 @@ fun Context?.showFavoriteCityDialogs(favoriteCities: List<FavoriteLocation>, onC
             ContextCompat.getColor(this!!, android.R.color.transparent)
         )
     )
+    val favoriteCityAdapter = FavoriteCityAdapter {
+        onCityClicked(it)
+        dialog.dismiss()
+    }
+    with(bind.favoriteCityList){
+        layoutManager = LinearLayoutManager(this@showFavoriteCityDialogs, LinearLayoutManager.VERTICAL, false)
+        adapter = favoriteCityAdapter
+    }
     favoriteCityAdapter.submitList(favoriteCities)
     dialog.show()
 }
