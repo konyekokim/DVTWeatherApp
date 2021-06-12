@@ -29,20 +29,22 @@ class ForecastAdapter() :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: List<WeatherData>) {
-            binding.forecastDay.text = getDay(item[0].dtTxt ?: "")
-            binding.forecastTemperature.text = item[0].main.temp.toString().appendTempSign()
-            when{
-                item[0].weather[0].main.contains("clouds", true) -> {
-                    binding.forecastImage.setImageResource(R.drawable.partly_sunny_icon)
-                }
-                item[0].weather[0].main.contains("clear", true) -> {
-                    binding.forecastImage.setImageResource(R.drawable.clear_icon)
-                }
-                item[0].weather[0].main.contains("rain", true) -> {
-                    binding.forecastImage.setImageResource(R.drawable.rain_icon)
-                }
-                else -> {
-                    binding.forecastImage.setImageResource(R.drawable.clear_icon)
+            if(item.isNotEmpty()) {
+                binding.forecastDay.text = getDay(item[0].dtTxt ?: "")
+                binding.forecastTemperature.text = item[0].main.temp.toString().appendTempSign()
+                when {
+                    item[0].weather[0].main.contains("clouds", true) -> {
+                        binding.forecastImage.setImageResource(R.drawable.partly_sunny_icon)
+                    }
+                    item[0].weather[0].main.contains("clear", true) -> {
+                        binding.forecastImage.setImageResource(R.drawable.clear_icon)
+                    }
+                    item[0].weather[0].main.contains("rain", true) -> {
+                        binding.forecastImage.setImageResource(R.drawable.rain_icon)
+                    }
+                    else -> {
+                        binding.forecastImage.setImageResource(R.drawable.clear_icon)
+                    }
                 }
             }
         }
