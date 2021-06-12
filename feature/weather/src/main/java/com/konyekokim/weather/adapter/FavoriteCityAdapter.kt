@@ -1,19 +1,15 @@
 package com.konyekokim.weather.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.konyekokim.commons.utils.GenericDiffCallback
 import com.konyekokim.core.data.entities.FavoriteLocation
-import com.konyekokim.core.network.responses.WeatherData
-import com.konyekokim.weather.R
 import com.konyekokim.weather.databinding.ItemFavoriteCityBinding
 
 class FavoriteCityAdapter(private val onCityClicked: (cityName: String) ->  Unit)
-    :ListAdapter<FavoriteLocation, FavoriteCityAdapter.ViewHolder>(GenericDiffCallback<FavoriteLocation>()){
+    :ListAdapter<FavoriteLocation, FavoriteCityAdapter.ViewHolder>(DIFF_CALLBACK){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemFavoriteCityBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -34,5 +30,17 @@ class FavoriteCityAdapter(private val onCityClicked: (cityName: String) ->  Unit
             }
         }
 
+    }
+
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<FavoriteLocation>() {
+            override fun areItemsTheSame(oldItem: FavoriteLocation, newItem: FavoriteLocation): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areContentsTheSame(oldItem: FavoriteLocation, newItem: FavoriteLocation): Boolean {
+                return oldItem == newItem
+            }
+        }
     }
 }
