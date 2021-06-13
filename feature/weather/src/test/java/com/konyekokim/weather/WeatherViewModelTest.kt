@@ -331,4 +331,112 @@ class WeatherViewModelTest {
             )
         }
     }
+
+    @Test
+    fun `state is error when there is no current weather by coordinates`() = coroutineTestRule.dispatcher.runBlockingTest {
+        coEvery {
+            repository.getCurrentWeatherByCoordinates(cityLat, cityLon)
+        } returns Result.Error(WeatherViewModel.ERROR_MESSAGE)
+
+        viewModel.currentByCoordinatesState.observeForever(currentStateObserver)
+
+        viewModel.getCurrentWeatherByCoordinates(cityLat, cityLon)
+
+        verifyOrder {
+            currentStateObserver.onChanged(CurrentWeatherViewState(DataState.Loading))
+            currentStateObserver.onChanged(
+                CurrentWeatherViewState(DataState.Error(WeatherViewModel.ERROR_MESSAGE))
+            )
+        }
+    }
+
+    @Test
+    fun `state is error when there is no forecast by city`() = coroutineTestRule.dispatcher.runBlockingTest {
+        coEvery {
+            repository.getForecastByCity(cityName)
+        } returns Result.Error(WeatherViewModel.ERROR_MESSAGE)
+
+        viewModel.forecastByCityState.observeForever(forecastStateObserver)
+
+        viewModel.getForecastByCity(cityName)
+
+        verifyOrder {
+            forecastStateObserver.onChanged(ForecastViewState(DataState.Loading))
+            forecastStateObserver.onChanged(
+                ForecastViewState(DataState.Error(WeatherViewModel.ERROR_MESSAGE))
+            )
+        }
+    }
+
+    @Test
+    fun `state is error when there is no forecast by coordinates`() = coroutineTestRule.dispatcher.runBlockingTest {
+        coEvery {
+            repository.getForecastByCoordinates(cityLat, cityLon)
+        } returns Result.Error(WeatherViewModel.ERROR_MESSAGE)
+
+        viewModel.forecastByCoordinatesState.observeForever(forecastStateObserver)
+
+        viewModel.getForecastByCoordinates(cityLat, cityLon)
+
+        verifyOrder {
+            forecastStateObserver.onChanged(ForecastViewState(DataState.Loading))
+            forecastStateObserver.onChanged(
+                ForecastViewState(DataState.Error(WeatherViewModel.ERROR_MESSAGE))
+            )
+        }
+    }
+
+    @Test
+    fun `state is error when there is no favorite locations`() = coroutineTestRule.dispatcher.runBlockingTest {
+        coEvery {
+            repository.getFavoriteLocations()
+        } returns null
+
+        viewModel.favoriteLocationState.observeForever(favoriteStateObserver)
+
+        viewModel.getFavoriteLocations()
+
+        verifyOrder {
+            favoriteStateObserver.onChanged(FavoriteLocationViewState(DataState.Loading))
+            favoriteStateObserver.onChanged(
+                FavoriteLocationViewState(DataState.Error(WeatherViewModel.FAV_LOC_ERROR_MESSAGE))
+            )
+        }
+    }
+
+    @Test
+    fun `state is error when there is no last saved current weather`() = coroutineTestRule.dispatcher.runBlockingTest {
+        coEvery {
+            repository.getLastSavedCurrentWeather()
+        } returns null
+
+        viewModel.currentByCityState.observeForever(currentStateObserver)
+
+        viewModel.getLastSavedCurrentWeather()
+
+        verifyOrder {
+            currentStateObserver.onChanged(CurrentWeatherViewState(DataState.Loading))
+            currentStateObserver.onChanged(
+                CurrentWeatherViewState(DataState.Error(WeatherViewModel.ERROR_MESSAGE_FROM_DB))
+            )
+        }
+    }
+
+    @Test
+    fun `state is error when there is no last saved forecast weather`() = coroutineTestRule.dispatcher.runBlockingTest {
+        coEvery {
+            repository.getLastSavedForecastWeather()
+        } returns null
+
+        viewModel.forecastByCityState.observeForever(forecastStateObserver)
+
+        viewModel.getLastSavedForecastWeather()
+
+        verifyOrder {
+            forecastStateObserver.onChanged(ForecastViewState(DataState.Loading))
+            forecastStateObserver.onChanged(
+                ForecastViewState(DataState.Error(WeatherViewModel.ERROR_MESSAGE_FROM_DB))
+            )
+        }
+    }
 }
