@@ -125,7 +125,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
                     // For example: Update the location of user on server
                 }
             },
-            Looper.myLooper()
+            Looper.myLooper()!!
         )
     }
 
@@ -154,7 +154,6 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
             if(!TextUtils.isEmpty(binding.searchEntry.text.toString())){
                 fetchWeatherDataByCity(binding.searchEntry.text.toString())
                 hideKeyboard()
-                true
             }
             false
         }
@@ -256,11 +255,11 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
         }
     }
 
-    private fun onForecastViewDataChanged(forecastWeather: ForecastWeather){
+    private fun onForecastViewDataChanged(forecastWeather: ForecastWeather?){
         prepareForecastData(forecastWeather)
     }
 
-    private fun prepareForecastData(response: ForecastWeather){
+    private fun prepareForecastData(response: ForecastWeather?){
         if (response != null) {
             Log.e("Forecast", response.toString())
             val data0: MutableList<WeatherData> = ArrayList<WeatherData>()

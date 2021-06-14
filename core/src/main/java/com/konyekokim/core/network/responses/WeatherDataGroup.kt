@@ -3,12 +3,12 @@ package com.konyekokim.core.network.responses
 import java.util.*
 
 class WeatherDataGroup {
-    private var dataGroup: MutableList<List<WeatherData>>
+    private var dataGroup: MutableList<List<WeatherData>>?
 
     @SafeVarargs
     constructor(vararg args: List<WeatherData>) {
         dataGroup = ArrayList<List<WeatherData>>()
-        dataGroup.addAll(Arrays.asList<List<WeatherData>>(*args))
+        dataGroup?.addAll(Arrays.asList<List<WeatherData>>(*args))
     }
 
     constructor(group: List<List<WeatherData>>?) {
@@ -17,10 +17,10 @@ class WeatherDataGroup {
 
     fun addWeatherData(data: List<WeatherData>) {
         if (dataGroup == null) dataGroup = ArrayList<List<WeatherData>>()
-        dataGroup.add(data)
+        dataGroup?.add(data)
     }
 
-    fun getDataGroup(): List<List<WeatherData>> {
+    fun getDataGroup(): List<List<WeatherData>>? {
         return dataGroup
     }
 
