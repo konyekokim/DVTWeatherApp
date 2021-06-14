@@ -8,4 +8,6 @@
     <string name="added_to_favorites">Added to Favorites</string>
     <string name="your_favorite_cities">Your Favorite Cities</string>
     <string name="no_cities_saved_as_favorite">No City Saved in Favorites</string>
+    <string name="gps_not_enabled">Gps not enabled</string>
+    <string name="location_permission_not_granted">Location permission not granted</string>
 </resources>

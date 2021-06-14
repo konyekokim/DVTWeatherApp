@@ -31,6 +31,7 @@ import com.konyekokim.weather.databinding.FragmentWeatherBinding
 import com.konyekokim.weather.di.DaggerWeatherComponent
 import com.konyekokim.weather.di.WeatherModule
 import com.konyekokim.weather.utils.checkConnectivity
+import com.konyekokim.weather.utils.prepareForecastData
 import com.konyekokim.weather.utils.showFavoriteCityDialogs
 import java.util.*
 import javax.inject.Inject
@@ -75,7 +76,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
                         setUpLocationListener()
                     }
                     else -> {
-                        //PermissionUtils.showGPSNotEnabledDialog(this)
+                        showSnackbar(getString(R.string.gps_not_enabled))
                     }
                 }
             }
@@ -95,7 +96,6 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
 
     private fun setUpLocationListener() {
         val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-        // for getting the current location update after every 2 seconds with high accuracy
         val locationRequest = LocationRequest().setInterval(2000).setFastestInterval(2000)
             .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
         if (ActivityCompat.checkSelfPermission(
@@ -121,8 +121,6 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
                             fetchWeatherDataFromCoordinates(lat, lon)
                         }
                     }
-                    // Few more things we can do here:
-                    // For example: Update the location of user on server
                 }
             },
             Looper.myLooper()!!
@@ -132,7 +130,6 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentWeatherBinding.bind(view)
-        //initPermissions()
         setUpForecastRecyclerView()
         observe(viewModel.currentByCityState, ::onCurrentWeatherViewStateChanged)
         observe(viewModel.currentByCoordinatesState, ::onCurrentWeatherViewStateChanged)
@@ -164,7 +161,6 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
             viewModel.getFavoriteLocations()
         }
         binding.addToFavoriteView.setOnClickListener {
-            Log.e("Favorite Cities", favoriteCites.toString())
             if(favoriteCites.isNotEmpty() && mCurrentWeather != null && favoriteCites.any { it.name == mCurrentWeather?.name + " , " + mCurrentWeather?.sys?.country }){
                 deleteCityFromFavorite(mCurrentWeather?.name + " , " + mCurrentWeather?.sys?.country)
                 addCityToFavoritesState()
@@ -249,76 +245,14 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
             is DataState.Error -> {
                 showSnackbar(dataState.message)
             }
-            else -> {
-                //do nothing
-            }
+            else -> { }
         }
     }
 
     private fun onForecastViewDataChanged(forecastWeather: ForecastWeather?){
-        prepareForecastData(forecastWeather)
-    }
-
-    private fun prepareForecastData(response: ForecastWeather?){
-        if (response != null) {
-            Log.e("Forecast", response.toString())
-            val data0: MutableList<WeatherData> = ArrayList<WeatherData>()
-            val data1: MutableList<WeatherData> = ArrayList<WeatherData>()
-            val data2: MutableList<WeatherData> = ArrayList<WeatherData>()
-            val data3: MutableList<WeatherData> = ArrayList<WeatherData>()
-            val data4: MutableList<WeatherData> = ArrayList<WeatherData>()
-            val data5: MutableList<WeatherData> = ArrayList<WeatherData>()
-            val calendar0 = Calendar.getInstance()
-            calendar0[Calendar.HOUR_OF_DAY] = 0
-            calendar0[Calendar.MINUTE] = 0
-            calendar0[Calendar.SECOND] = 0
-            calendar0[Calendar.MILLISECOND] = 0
-            val calendar1 = calendar0.clone() as Calendar
-            calendar1.add(Calendar.DAY_OF_YEAR, 1)
-            val calendar2 = calendar0.clone() as Calendar
-            calendar2.add(Calendar.DAY_OF_YEAR, 2)
-            val calendar3 = calendar0.clone() as Calendar
-            calendar3.add(Calendar.DAY_OF_YEAR, 3)
-            val calendar4 = calendar0.clone() as Calendar
-            calendar4.add(Calendar.DAY_OF_YEAR, 4)
-            val calendar5 = calendar0.clone() as Calendar
-            calendar5.add(Calendar.DAY_OF_YEAR, 5)
-            for (data in response.list!!) {
-                when {
-                    getCalendarFromDate(data.dt)!!.before(calendar1) -> {
-                        data0.add(data)
-                    }
-                    getCalendarFromDate(data.dt)!!.before(calendar2) -> {
-                        data1.add(data)
-                    }
-                    getCalendarFromDate(data.dt)!!.before(calendar3) -> {
-                        data2.add(data)
-                    }
-                    getCalendarFromDate(data.dt)!!.before(calendar4) -> {
-                        data3.add(data)
-                    }
-                    getCalendarFromDate(data.dt)!!.before(calendar5) -> {
-                        data4.add(data)
-                    }
-                    else -> {
-                        data5.add(data)
-                    }
-                }
-            }
-            val dataGroup = WeatherDataGroup(data0)
-            if (data1.size > 0) dataGroup.addWeatherData(data1)
-            if (data2.size > 0) dataGroup.addWeatherData(data2)
-            if (data3.size > 0) dataGroup.addWeatherData(data3)
-            if (data4.size > 0) dataGroup.addWeatherData(data4)
-            if (data5.size > 0) dataGroup.addWeatherData(data5)
-            forecastAdapter.submitList(dataGroup.getDataGroup())
+        prepareForecastData(forecastWeather){
+            forecastAdapter.submitList(it)
         }
-    }
-
-    private fun getCalendarFromDate(date: Long): Calendar? {
-        val cal = Calendar.getInstance()
-        cal.timeInMillis = date * 1000L
-        return cal
     }
 
     private fun onForecastViewStateChanged(forecastViewState: ForecastViewState){
@@ -326,9 +260,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
             is DataState.Error -> {
                 showSnackbar(dataState.message)
             }
-            else -> {
-                //do nothing
-            }
+            else -> { }
         }
     }
 
@@ -351,9 +283,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
             is DataState.Error -> {
                 showSnackbar(dataState.message)
             }
-            else -> {
-                //do nothing
-            }
+            else -> { }
         }
     }
 
@@ -400,11 +330,11 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
                             setUpLocationListener()
                         }
                         else -> {
-                            showSnackbar("GPS not enabled")
+                            showSnackbar(getString(R.string.gps_not_enabled))
                         }
                     }
                 } else {
-                    showSnackbar("Location Permission not Granted")
+                    showSnackbar(getString(R.string.location_permission_not_granted))
                 }
             }
         }
