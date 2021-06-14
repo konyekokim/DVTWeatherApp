@@ -14,7 +14,7 @@ object Versions {
     const val paging = "2.1.2"
     const val room = "2.2.5"
 
-    const val kotlin = "1.3.72"
+    const val kotlin = "1.4.31"
     const val gradle = "4.2.0"
 
     const val coroutines = "1.3.6"

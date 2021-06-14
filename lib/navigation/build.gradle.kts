@@ -4,6 +4,8 @@ plugins {
     id(Plugins.safeArgs)
 }
 
+apply(from = "${project.rootDir}/jacoco.gradle")
+
 dependencies {
 
     implementation(Dependencies.Kotlin.stdlib)

@@ -4,6 +4,8 @@ plugins {
     kotlin(Plugins.kotlinKapt)
 }
 
+apply(from = "${project.rootDir}/jacoco.gradle")
+
 android {
     buildFeatures {
         dataBinding = true
