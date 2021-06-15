@@ -4,9 +4,11 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
+const val TIME_IN_MILLIS_MULTIPLIER = 1000L
+
 fun getDateString(date: Long): String? {
     return SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
-        .format(Date(date * 1000L))
+        .format(Date(date * TIME_IN_MILLIS_MULTIPLIER))
 }
 
 fun getDay(date: String): String? {

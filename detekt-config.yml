@@ -82,13 +82,13 @@ complexity:
     includeStaticDeclarations: false
   ComplexMethod:
     active: true
-    threshold: 10
+    threshold: 15
     ignoreSingleWhenExpression: false
   LabeledExpression:
     active: false
   LargeClass:
     active: true
-    threshold: 150
+    threshold: 175
   LongMethod:
     active: true
     threshold: 20
@@ -110,10 +110,10 @@ complexity:
     ignoreStringsRegex: '$^'
   TooManyFunctions:
     active: true
-    thresholdInFiles: 11
-    thresholdInClasses: 11
-    thresholdInInterfaces: 11
-    thresholdInObjects: 11
+    thresholdInFiles: 25
+    thresholdInClasses: 25
+    thresholdInInterfaces: 25
+    thresholdInObjects: 25
     thresholdInEnums: 11
     ignoreDeprecated: false
     ignorePrivate: false
@@ -182,7 +182,6 @@ exceptions:
     exceptionNames:
       - ArrayIndexOutOfBoundsException
       - Error
-      - Exception
       - IllegalMonitorStateException
       - NullPointerException
       - IndexOutOfBoundsException
@@ -341,7 +340,7 @@ performance:
   ForEachOnRange:
     active: true
   SpreadOperator:
-    active: true
+    active: false
   UnnecessaryTemporaryInstantiation:
     active: true
 
@@ -480,4 +479,4 @@ style:
     active: false
   WildcardImport:
     active: true
-    excludeImports: 'java.util.*,kotlinx.android.synthetic.*'
+    excludeImports: 'java.util.*,kotlinx.android.synthetic.*,com.konyekokim.commons.extensions.*,com.konyekokim.core.network.responses.*'

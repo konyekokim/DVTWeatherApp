@@ -12,7 +12,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.gms.location.*
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
 import com.konyekokim.commons.extensions.*
 import com.konyekokim.commons.ui.getDateString
 import com.konyekokim.commons.utils.PermissionUtils
@@ -82,7 +85,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
 
     private fun setUpLocationListener() {
         val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-        val locationRequest = LocationRequest().setInterval(2000).setFastestInterval(2000)
+        val locationRequest = LocationRequest().setInterval(LOCATION_REQUEST_TIME_INTERVAL).setFastestInterval(LOCATION_REQUEST_TIME_INTERVAL)
             .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
@@ -152,7 +155,8 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
             viewModel.getFavoriteLocations()
         }
         binding.addToFavoriteView.setOnClickListener {
-            if(favoriteCites.isNotEmpty() && mCurrentWeather != null && favoriteCites.any { it.name == mCurrentWeather?.name + " , " + mCurrentWeather?.sys?.country }){
+            if(favoriteCites.isNotEmpty() && mCurrentWeather != null &&
+                favoriteCites.any { it.name == mCurrentWeather?.name + " , " + mCurrentWeather?.sys?.country }){
                 deleteCityFromFavorite(mCurrentWeather?.name + " , " + mCurrentWeather?.sys?.country)
                 addCityToFavoritesState()
             } else  {
@@ -333,5 +337,6 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
 
     companion object {
         const val LOCATION_PERMISSION_REQUEST_CODE = 419
+        const val LOCATION_REQUEST_TIME_INTERVAL = 2000L
     }
 }

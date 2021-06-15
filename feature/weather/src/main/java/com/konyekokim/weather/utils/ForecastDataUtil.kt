@@ -15,20 +15,20 @@ fun prepareForecastData(response: ForecastWeather?,
         val data4: MutableList<WeatherData> = ArrayList<WeatherData>()
         val data5: MutableList<WeatherData> = ArrayList<WeatherData>()
         val calendar0 = Calendar.getInstance()
-        calendar0[Calendar.HOUR_OF_DAY] = 0
-        calendar0[Calendar.MINUTE] = 0
-        calendar0[Calendar.SECOND] = 0
-        calendar0[Calendar.MILLISECOND] = 0
+        calendar0[Calendar.HOUR_OF_DAY] = AMOUNT_0
+        calendar0[Calendar.MINUTE] = AMOUNT_0
+        calendar0[Calendar.SECOND] = AMOUNT_0
+        calendar0[Calendar.MILLISECOND] = AMOUNT_0
         val calendar1 = calendar0.clone() as Calendar
-        calendar1.add(Calendar.DAY_OF_YEAR, 1)
+        calendar1.add(Calendar.DAY_OF_YEAR, AMOUNT_1)
         val calendar2 = calendar0.clone() as Calendar
-        calendar2.add(Calendar.DAY_OF_YEAR, 2)
+        calendar2.add(Calendar.DAY_OF_YEAR, AMOUNT_2)
         val calendar3 = calendar0.clone() as Calendar
-        calendar3.add(Calendar.DAY_OF_YEAR, 3)
+        calendar3.add(Calendar.DAY_OF_YEAR, AMOUNT_3)
         val calendar4 = calendar0.clone() as Calendar
-        calendar4.add(Calendar.DAY_OF_YEAR, 4)
+        calendar4.add(Calendar.DAY_OF_YEAR, AMOUNT_4)
         val calendar5 = calendar0.clone() as Calendar
-        calendar5.add(Calendar.DAY_OF_YEAR, 5)
+        calendar5.add(Calendar.DAY_OF_YEAR, AMOUNT_5)
         for (data in response.list!!) {
             when {
                 getCalendarFromDate(data.dt)!!.before(calendar1) -> {
@@ -63,6 +63,14 @@ fun prepareForecastData(response: ForecastWeather?,
 
 private fun getCalendarFromDate(date: Long): Calendar? {
     val cal = Calendar.getInstance()
-    cal.timeInMillis = date * 1000L
+    cal.timeInMillis = date * TIME_IN_MILLIS_MULTIPLIER
     return cal
 }
+
+const val TIME_IN_MILLIS_MULTIPLIER = 1000L
+const val AMOUNT_0 = 0
+const val AMOUNT_1 = 1
+const val AMOUNT_2 = 2
+const val AMOUNT_3 = 3
+const val AMOUNT_4 = 4
+const val AMOUNT_5 = 5
