@@ -6,6 +6,7 @@ plugins {
 }
 
 apply(from = "${project.rootDir}/jacoco.gradle")
+apply(from = "${project.rootDir}/detekt.gradle")
 
 android {
     compileSdkVersion(Configs.Versions.compileSdk)

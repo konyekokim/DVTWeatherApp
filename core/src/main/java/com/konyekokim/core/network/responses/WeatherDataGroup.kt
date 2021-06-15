@@ -8,7 +8,7 @@ class WeatherDataGroup {
     @SafeVarargs
     constructor(vararg args: List<WeatherData>) {
         dataGroup = ArrayList<List<WeatherData>>()
-        dataGroup?.addAll(Arrays.asList<List<WeatherData>>(*args))
+        dataGroup?.addAll(listOf(*args))
     }
 
     constructor(group: List<List<WeatherData>>?) {

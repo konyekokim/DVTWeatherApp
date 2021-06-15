@@ -2,7 +2,6 @@ package com.konyekokim.core.database
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
-import com.konyekokim.core.data.entities.FavoriteLocation
 import com.konyekokim.core.network.responses.*
 
 class Converter {
