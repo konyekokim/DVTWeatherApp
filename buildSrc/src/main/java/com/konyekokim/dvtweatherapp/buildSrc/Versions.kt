@@ -47,4 +47,10 @@ object Versions {
     //Connectivity
     const val connectionManager = "0.0.2"
 
+    //Jacoco
+    const val jacoco = "0.8.7"
+
+    //detekt
+    const val detekt = "1.0.0.RC8"
+
 }

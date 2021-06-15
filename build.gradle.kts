@@ -10,7 +10,6 @@ plugins {
 }
 
 buildscript {
-    val kotlin_version by extra("1.4.31")
     repositories {
         google()
         jcenter()
@@ -20,9 +19,8 @@ buildscript {
         classpath(Classpaths.gradle)
         classpath(Classpaths.kotlinGradle)
         classpath(Classpaths.safeArgs)
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
-        classpath("org.jacoco:org.jacoco.core:0.8.7")
-        classpath("gradle.plugin.io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.0.0.RC8")
+        classpath(Classpaths.jacocoCore)
+        classpath(Classpaths.detektGradle)
     }
 }
 
