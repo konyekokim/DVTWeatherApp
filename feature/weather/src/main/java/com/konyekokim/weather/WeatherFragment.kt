@@ -1,13 +1,11 @@
 package com.konyekokim.weather
 
 import android.Manifest
-import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Looper
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
@@ -18,14 +16,11 @@ import com.google.android.gms.location.*
 import com.konyekokim.commons.extensions.*
 import com.konyekokim.commons.ui.getDateString
 import com.konyekokim.commons.utils.PermissionUtils
-import com.konyekokim.commons.utils.RequestPermissionHandler
 import com.konyekokim.core.data.DataState
 import com.konyekokim.core.data.entities.CurrentWeather
 import com.konyekokim.core.data.entities.FavoriteLocation
 import com.konyekokim.core.data.entities.ForecastWeather
 import com.konyekokim.core.di.provider.CoreComponentProvider
-import com.konyekokim.core.network.responses.WeatherData
-import com.konyekokim.core.network.responses.WeatherDataGroup
 import com.konyekokim.weather.adapter.ForecastAdapter
 import com.konyekokim.weather.databinding.FragmentWeatherBinding
 import com.konyekokim.weather.di.DaggerWeatherComponent
@@ -38,16 +33,12 @@ import javax.inject.Inject
 
 class WeatherFragment : Fragment(R.layout.fragment_weather) {
 
-    private val LOCATION_PERMISSION_REQUEST_CODE = 419
-
     @Inject
     lateinit var viewModel: WeatherViewModel
 
     private lateinit var binding: FragmentWeatherBinding
 
     private lateinit var forecastAdapter: ForecastAdapter
-
-    private lateinit var permissionHandler: RequestPermissionHandler
 
     private var currentLocation: FavoriteLocation? = null
     private var mCurrentWeather: CurrentWeather? = null
@@ -56,7 +47,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
     var lat = 0.00
     var lon = 0.00
     var count = 0
-    var justLaunched = true
+    private var justLaunched = true
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -87,11 +78,6 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
                 )
             }
         }
-    }
-
-    private fun getLastSavedWeatherInfo(){
-        viewModel.getLastSavedCurrentWeather()
-        viewModel.getLastSavedForecastWeather()
     }
 
     private fun setUpLocationListener() {
@@ -144,6 +130,11 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
         setUpCitySearchView()
         initFavoriteViews()
         viewModel.getFavoriteLocations()
+    }
+
+    private fun getLastSavedWeatherInfo(){
+        viewModel.getLastSavedCurrentWeather()
+        viewModel.getLastSavedForecastWeather()
     }
 
     private fun setUpCitySearchView(){
@@ -338,5 +329,9 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
                 }
             }
         }
+    }
+
+    companion object {
+        const val LOCATION_PERMISSION_REQUEST_CODE = 419
     }
 }
