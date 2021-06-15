@@ -11,7 +11,7 @@ import com.konyekokim.core.network.responses.WeatherData
 import com.konyekokim.weather.R
 import com.konyekokim.weather.databinding.ItemForecastBinding
 
-class ForecastAdapter() :
+class ForecastAdapter :
     ListAdapter<List<WeatherData>, ForecastAdapter.WeatherDataItemViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherDataItemViewHolder {

@@ -22,7 +22,7 @@ buildscript {
         classpath(Classpaths.safeArgs)
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
         classpath("org.jacoco:org.jacoco.core:0.8.7")
-        classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.8.0.1969")
+        classpath("gradle.plugin.io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.0.0.RC8")
     }
 }
 
