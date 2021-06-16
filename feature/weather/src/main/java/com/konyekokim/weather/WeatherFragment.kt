@@ -76,7 +76,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
             }
             else -> {
                 PermissionUtils.requestAccessFineLocationPermission(
-                    requireActivity() as AppCompatActivity,
+                    this,
                     LOCATION_PERMISSION_REQUEST_CODE
                 )
             }

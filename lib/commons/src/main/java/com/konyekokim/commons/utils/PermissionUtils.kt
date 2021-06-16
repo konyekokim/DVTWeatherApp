@@ -2,22 +2,17 @@ package com.konyekokim.commons.utils
 
 import android.Manifest
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.LocationManager
-import android.provider.Settings
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 
 object PermissionUtils {
     /**
      * Function to request permission from the user
      */
-    fun requestAccessFineLocationPermission(activity: AppCompatActivity, requestId: Int) {
-        ActivityCompat.requestPermissions(
-            activity,
+    fun requestAccessFineLocationPermission(fragment: Fragment, requestId: Int) {
+        fragment.requestPermissions(
             arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
             requestId
         )
