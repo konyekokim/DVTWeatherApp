@@ -1,10 +1,9 @@
 # DVT Weather Application :package:
-
-![Shogunle](https://user-images.githubusercontent.com/34070156/122163731-8bf86100-ce6d-11eb-8459-8146ebc4b4fa.JPG)
-![Pretoria](https://user-images.githubusercontent.com/34070156/122163742-8f8be800-ce6d-11eb-9f5a-250148bf6e73.JPG)
-![Mountain View](https://user-images.githubusercontent.com/34070156/122163744-90bd1500-ce6d-11eb-9f2e-a8accb8b2334.JPG)
-![Abuja](https://user-images.githubusercontent.com/34070156/122163746-9155ab80-ce6d-11eb-8e61-0d506a4ccdfc.JPG)
-![fav locations](https://user-images.githubusercontent.com/34070156/122163747-91ee4200-ce6d-11eb-83b2-f2e3f05007ee.JPG)
+![Shogunle](https://user-images.githubusercontent.com/34070156/122164068-1345d480-ce6e-11eb-9abb-c9890a444f03.JPG)
+![Pretoria](https://user-images.githubusercontent.com/34070156/122164174-48522700-ce6e-11eb-858c-bd992e2d3cb7.JPG)
+![Mountain View](https://user-images.githubusercontent.com/34070156/122164180-4a1bea80-ce6e-11eb-8c2f-ad21da9c7a51.JPG)
+![Abuja](https://user-images.githubusercontent.com/34070156/122164182-4ab48100-ce6e-11eb-904e-e10ccc705427.JPG)
+![fav locations](https://user-images.githubusercontent.com/34070156/122164185-4be5ae00-ce6e-11eb-9903-f21fd031d09a.JPG)
 
 The purpose of this repo to demonstrate the use of a best practices to create a **Weather application** to display the current weather at the user’s location and a 5-day forecast.
 
