@@ -37,9 +37,6 @@ object Versions {
     const val mockk = "1.10.0"
     const val junit = "4.12"
 
-    // Circle ImageView
-    const val circleImageView = "2.2.0"
-
     //Google Play Service
     const val googlePlayService = "18.0.0"
 

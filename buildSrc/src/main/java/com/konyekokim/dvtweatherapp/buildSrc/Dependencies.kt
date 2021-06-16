@@ -91,10 +91,6 @@ object Dependencies {
         const val mockWebServer = "com.squareup.okhttp3:mockwebserver:${Versions.okHttp}"
     }
 
-    object CircleImageView {
-        const val circleImageView = "de.hdodenhof:circleimageview:${Versions.circleImageView}"
-    }
-
     object GooglePlayService{
         const val playServiceLocation = "com.google.android.gms:play-services-location:${Versions.googlePlayService}"
     }
