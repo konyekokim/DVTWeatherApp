@@ -17,6 +17,14 @@ jobs:
           name: Download Dependencies
           command: ./gradlew androidDependencies
 
+      - run:
+          name: Run Jacoco Test
+          command: ./gradlew jacocoTestReport
+
+      - run:
+          name: Run Detekt Check
+          command: ./gradlew detektCheck        
+
       - save_cache:
           paths:
             - ~/.gradle
