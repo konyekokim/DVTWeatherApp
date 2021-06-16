@@ -2,7 +2,6 @@
 ![Shogunle](https://user-images.githubusercontent.com/34070156/122164068-1345d480-ce6e-11eb-9abb-c9890a444f03.JPG)
 ![Pretoria](https://user-images.githubusercontent.com/34070156/122164174-48522700-ce6e-11eb-858c-bd992e2d3cb7.JPG)
 ![Mountain View](https://user-images.githubusercontent.com/34070156/122164180-4a1bea80-ce6e-11eb-8c2f-ad21da9c7a51.JPG)
-![Abuja](https://user-images.githubusercontent.com/34070156/122164182-4ab48100-ce6e-11eb-904e-e10ccc705427.JPG)
 ![fav locations](https://user-images.githubusercontent.com/34070156/122164185-4be5ae00-ce6e-11eb-9903-f21fd031d09a.JPG)
 
 The purpose of this repo to demonstrate the use of a best practices to create a **Weather application** to display the current weather at the user’s location and a 5-day forecast.
